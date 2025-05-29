@@ -66,10 +66,10 @@ const Shop = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" className="h-12 flex items-center justify-between gap-2 bg-purple-50 text-purple-800">
                     {selectedCategoryName}
-                    <ChevronDown className="h-4 w-4 opacity-50" />
+                    <ChevronDown className="h-4 w-4 opacity-50 bg-white text-black" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56">
+                <DropdownMenuContent className="w-56 bg-white text-purple-900">
                   <DropdownMenuRadioGroup value={selectedCategory} onValueChange={setSelectedCategory}>
                     {categories.map((category) => (
                       <DropdownMenuRadioItem 
@@ -95,9 +95,9 @@ const Shop = () => {
               {selectedCategory !== 'all' && ` in ${selectedCategoryName}`}
             </p>
             
-            <div className="flex items-center gap-2">
-              <Filter className="h-4 w-4 text-gray-400" />
-              <select className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:border-brand-purple focus:ring-brand-purple">
+            <div className="flex items-center gap-2 bg-slate-50 text-black">
+              <Filter className="h-4 w-4 text-gray-500" />
+              <select className="border border-gray-300 text-gray-800 rounded-lg px-3 py-2 text-sm focus:border-brand-purple focus:ring-brand-purple">
                 <option>Sort by: Popular</option>
                 <option>Price: Low to High</option>
                 <option>Price: High to Low</option>
