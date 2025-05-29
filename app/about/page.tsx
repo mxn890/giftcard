@@ -1,33 +1,33 @@
 'use client'
 import { Zap, ShieldCheck, CreditCard, MessageSquare, Gamepad } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Link from 'next/link'; // import Next.js Link
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 const AboutPage = () => {
   const features = [
     {
-      icon: <Gamepad className="w-8 h-8" />,
+      icon: <Gamepad className="w-8 h-8 text-black" />,
       title: "Built for Gamers, by Gamers",
       description: "We know the grind — that's why we deliver real, region-ready gift cards that work every time."
     },
     {
-      icon: <Zap className="w-8 h-8" />,
+      icon: <Zap className="w-8 h-8 text-black" />,
       title: "Instant Delivery",
       description: "No waiting. Get your codes within minutes straight to your inbox or dashboard."
     },
     {
-      icon: <ShieldCheck className="w-8 h-8" />,
+      icon: <ShieldCheck className="w-8 h-8 text-black" />,
       title: "100% Legit & Verified",
       description: "No fake cards, no shady sellers. Every code is verified & guaranteed to work."
     },
     {
-      icon: <CreditCard className="w-8 h-8" />,
+      icon: <CreditCard className="w-8 h-8 text-black" />,
       title: "Multiple Payment Options",
       description: "Pay with Crypto, PayPal, Stripe, and more — whatever works best for you."
     },
     {
-      icon: <MessageSquare className="w-8 h-8" />,
+      icon: <MessageSquare className="w-8 h-8 text-black" />,
       title: "Fast Support, Real People",
       description: "Got a problem? We reply fast. Real humans, real help — not bots."
     }
@@ -143,7 +143,6 @@ const AboutPage = () => {
                     <Button 
                       size="lg" 
                       className="bg-white text-purple-600 hover:bg-gray-100 font-bold shadow-lg"
-                      // Make Button render <a> tag to work with Link
                     >
                       Shop Now
                     </Button>
@@ -153,7 +152,6 @@ const AboutPage = () => {
                       size="lg" 
                       variant="outline" 
                       className="text-white border-white hover:bg-purple-700/20 font-bold"
-                      
                     >
                       Contact Us
                     </Button>
@@ -167,7 +165,7 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* Team Section (Optional) */}
+      {/* Team Section */}
       <section className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -182,7 +180,7 @@ const AboutPage = () => {
               className="bg-gray-50 p-8 rounded-xl text-center"
             >
               <div className="w-32 h-32 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                <Gamepad className="w-12 h-12 text-purple-600" />
+                <Gamepad className="w-12 h-12 text-black" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Gamer-First Approach</h3>
               <p className="text-gray-600">
@@ -194,7 +192,7 @@ const AboutPage = () => {
               className="bg-gray-50 p-8 rounded-xl text-center"
             >
               <div className="w-32 h-32 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                <ShieldCheck className="w-12 h-12 text-purple-600" />
+                <ShieldCheck className="w-12 h-12 text-black" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Trust & Transparency</h3>
               <p className="text-gray-600">
@@ -206,7 +204,7 @@ const AboutPage = () => {
               className="bg-gray-50 p-8 rounded-xl text-center"
             >
               <div className="w-32 h-32 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                <Zap className="w-12 h-12 text-purple-600" />
+                <Zap className="w-12 h-12 text-black" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Lightning Fast Delivery</h3>
               <p className="text-gray-600">
