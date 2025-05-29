@@ -40,11 +40,11 @@ const Shop = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-brand-light-gray">
+      <div className="min-h-screen bg-gray-50">
         {/* Page Header */}
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold text-brand-dark-gray mb-4">Gift Card Shop</h1>
+            <h1 className="text-3xl font-extrabold text-brand-dark-gray mb-4">Gift Card Shop</h1>
             <p className="text-gray-600 mb-6">
               Browse our complete collection of digital gift cards from top brands
             </p>
@@ -58,13 +58,13 @@ const Shop = () => {
                   placeholder="Search gift cards..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 h-12 border-brand-purple focus:border-brand-purple focus:ring-brand-purple"
+                  className="pl-10 h-12 border-brand-purple focus:border-brand-purple focus:ring-brand-purple text-black"
                 />
               </div>
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="h-12 flex items-center justify-between gap-2 bg-yellow-50">
+                  <Button variant="outline" className="h-12 flex items-center justify-between gap-2 bg-purple-50 text-purple-800">
                     {selectedCategoryName}
                     <ChevronDown className="h-4 w-4 opacity-50" />
                   </Button>
@@ -88,7 +88,7 @@ const Shop = () => {
         </div>
 
         {/* Results */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white font-semibold">
           <div className="flex justify-between items-center mb-6">
             <p className="text-gray-600">
               Showing {filteredCards.length} gift cards

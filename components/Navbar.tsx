@@ -78,7 +78,7 @@ const Navbar = () => {
           {/* Search Bar with Animation */}
           <div className="hidden md:flex flex-1 max-w-lg mx-8 relative">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-800 h-4 w-4" />
               <Input
                 type="text"
                 placeholder="Search gift cards..."
@@ -86,7 +86,7 @@ const Navbar = () => {
                 onChange={(e) => handleSearch(e.target.value)}
                 onFocus={() => searchTerm && setShowSearchResults(true)}
                 onBlur={() => setTimeout(() => setShowSearchResults(false), 200)}
-                className="pl-10 border-gray-300 focus:border-purple-500 focus:ring-purple-500 transition-all duration-300"
+                className="pl-10 border-gray-300 focus:border-purple-500 focus:ring-purple-500 transition-all duration-300 text-black"
               />
 
               {/* Animated Search Results Dropdown */}
@@ -150,7 +150,7 @@ const Navbar = () => {
             </Link>
 
             {/* Auth Buttons */}
-            <div className="hidden md:flex items-center space-x-2">
+            <div className="hidden md:flex items-center space-x-2 text-black">
               <Link href="/login">
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Button variant="outline" size="sm">
@@ -219,16 +219,16 @@ const Navbar = () => {
                     Shop
                   </Link>
                   <Link 
-                    href="/popular" 
+                    href="/about" 
                     className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-lg hover:bg-purple-50 transition-colors font-medium"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Popular
+                    About
                   </Link>
                 </div>
 
                 {/* Mobile Auth Buttons */}
-                <div className="flex space-x-3 pt-4">
+                <div className="flex space-x-3 pt-4 text-black">
                   <Link href="/login" className="flex-1" onClick={() => setIsMenuOpen(false)}>
                     <Button variant="outline" size="sm" className="w-full">
                       Login

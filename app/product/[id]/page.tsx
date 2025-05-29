@@ -22,12 +22,11 @@ const ProductDetailPage = ({ params }: Props) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   useEffect(() => {
-    // Simulate loading data
     const foundProduct = giftCardsData.find(card => card.id === params.id);
     setTimeout(() => {
       setProduct(foundProduct || null);
       setLoading(false);
-    }, 300); // Small delay to show loading state
+    }, 300);
   }, [params.id]);
 
   useEffect(() => {
@@ -39,7 +38,7 @@ const ProductDetailPage = ({ params }: Props) => {
   if (loading) {
     return (
       <Layout>
-        <div className="min-h-screen bg-brand-light-gray flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-pulse">
               <div className="h-8 w-64 bg-gray-200 rounded mb-4 mx-auto"></div>
@@ -54,10 +53,13 @@ const ProductDetailPage = ({ params }: Props) => {
   if (!product) {
     return (
       <Layout>
-        <div className="min-h-screen bg-brand-light-gray flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-brand-dark-gray mb-4">Product Not Found</h2>
-            <Button onClick={() => router.push('/shop')} className="bg-brand-purple hover:bg-purple-700">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h2>
+            <Button 
+              onClick={() => router.push('/shop')} 
+              className="bg-purple-600 hover:bg-purple-700 text-white"
+            >
               Back to Shop
             </Button>
           </div>
@@ -88,37 +90,37 @@ const ProductDetailPage = ({ params }: Props) => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-brand-light-gray">
+      <div className="min-h-screen bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Button
             variant="outline"
             onClick={() => router.back()}
-            className="mb-6 border-brand-purple text-brand-purple hover:bg-brand-purple hover:text-white"
+            className="mb-6 border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back
           </Button>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Product Image */}
-            <div className="space-y-4">
-              <div className="aspect-w-4 aspect-h-3 bg-white rounded-2xl overflow-hidden shadow-lg">
+            <div className="space-y-6">
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <img 
                   src={product.image} 
                   alt={product.title}
-                  className="w-full h-96 object-cover"
+                  className="w-full h-full max-h-96 object-contain p-6"
                 />
               </div>
 
-              <div className="bg-white rounded-xl p-6 shadow-md">
-                <h3 className="font-semibold text-lg text-brand-dark-gray mb-4">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h3 className="font-semibold text-lg text-gray-900 mb-4">
                   Why Choose {product.title}?
                 </h3>
-                <ul className="space-y-2 text-gray-600">
+                <ul className="space-y-3 text-gray-700">
                   {['Instant digital delivery', 'No expiration date', 'Easy to redeem', 'Perfect for gifting'].map((item, idx) => (
-                    <li key={idx} className="flex items-center">
-                      <span className="w-2 h-2 bg-brand-purple rounded-full mr-3"></span>
-                      {item}
+                    <li key={idx} className="flex items-start">
+                      <span className="w-2 h-2 bg-purple-600 rounded-full mt-2 mr-3 flex-shrink-0"></span>
+                      <span>{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -127,8 +129,8 @@ const ProductDetailPage = ({ params }: Props) => {
 
             {/* Product Details */}
             <div className="space-y-6">
-              <div>
-                <div className="flex items-center mb-2">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <div className="flex items-center mb-3">
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
@@ -140,27 +142,27 @@ const ProductDetailPage = ({ params }: Props) => {
                   <span className="ml-2 text-gray-600">({product.rating}.0) • 2,847 reviews</span>
                 </div>
 
-                <h1 className="text-3xl font-bold text-brand-dark-gray mb-4">
+                <h1 className="text-3xl font-bold text-gray-900 mb-4">
                   {product.title} Gift Card
                 </h1>
 
-                <p className="text-gray-600 text-lg leading-relaxed">
+                <p className="text-gray-700 text-lg leading-relaxed">
                   {product.fullDescription}
                 </p>
               </div>
 
-              {/* Amount Selection */}
-              <div className="bg-white rounded-xl p-6 shadow-md">
-                <h3 className="font-semibold text-lg text-brand-dark-gray mb-4">Select Amount</h3>
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-3 mb-6">
+              {/* Purchase Card */}
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h3 className="font-semibold text-lg text-gray-900 mb-4">Select Amount</h3>
+                <div className="grid grid-cols-3 sm:grid-cols-5 gap-3 mb-6">
                   {product.amounts.map((amount) => (
                     <button
                       key={amount}
                       onClick={() => setSelectedAmount(amount)}
-                      className={`p-3 rounded-lg border-2 text-center transition-all ${
+                      className={`p-3 rounded-lg border-2 text-center transition-colors ${
                         selectedAmount === amount
-                          ? 'border-brand-purple bg-brand-purple text-white'
-                          : 'border-gray-300 hover:border-brand-purple'
+                          ? 'border-purple-600 bg-purple-600 text-white'
+                          : 'border-gray-300 hover:border-purple-500 text-gray-800'
                       }`}
                     >
                       <div className="font-bold">${amount}</div>
@@ -168,12 +170,12 @@ const ProductDetailPage = ({ params }: Props) => {
                   ))}
                 </div>
 
-                <div className="space-y-2 mb-6">
+                <div className="space-y-3 mb-6">
                   <div className="flex justify-between items-center">
-                    <span className="text-2xl font-bold text-brand-purple">${selectedAmount}.00 USD</span>
+                    <span className="text-2xl font-bold text-purple-600">${selectedAmount}.00 USD</span>
                     {product.discount && (
                       <span className="text-green-600 font-medium">
-                        You saved ${Math.floor(selectedAmount * (product.discount / 100))}!
+                        Save ${Math.floor(selectedAmount * (product.discount / 100))}
                       </span>
                     )}
                   </div>
@@ -183,14 +185,24 @@ const ProductDetailPage = ({ params }: Props) => {
                 </div>
 
                 {/* Quantity */}
-                <div className="flex items-center space-x-4 mb-6">
-                  <span className="font-medium text-brand-dark-gray">Quantity:</span>
+                <div className="flex items-center justify-between mb-6">
+                  <span className="font-medium text-gray-700">Quantity:</span>
                   <div className="flex items-center space-x-3">
-                    <Button variant="outline" size="sm" onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                    >
                       <Minus className="h-4 w-4" />
                     </Button>
-                    <span className="font-semibold text-lg w-8 text-center">{quantity}</span>
-                    <Button variant="outline" size="sm" onClick={() => setQuantity(quantity + 1)}>
+                    <span className="font-semibold text-lg w-8 text-center text-gray-900">{quantity}</span>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                    >
                       <Plus className="h-4 w-4" />
                     </Button>
                   </div>
@@ -198,19 +210,19 @@ const ProductDetailPage = ({ params }: Props) => {
 
                 {/* Total */}
                 <div className="border-t border-gray-200 pt-4 mb-6">
-                  <div className="flex justify-between items-center text-xl font-bold">
-                    <span>Total:</span>
-                    <span className="text-brand-purple">${totalPrice}.00</span>
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-semibold text-gray-900">Total:</span>
+                    <span className="text-2xl font-bold text-purple-600">${totalPrice}.00</span>
                   </div>
                 </div>
 
                 {/* Add to Cart */}
                 <Button
                   onClick={handleAddToCart}
-                  className={`w-full py-4 text-lg font-semibold transition-all ${
+                  className={`w-full py-4 text-lg font-semibold transition-colors ${
                     isAddedToCart 
-                      ? 'bg-green-500 hover:bg-green-600' 
-                      : 'bg-brand-purple hover:bg-purple-700'
+                      ? 'bg-green-600 hover:bg-green-700' 
+                      : 'bg-purple-600 hover:bg-purple-700'
                   }`}
                   disabled={selectedAmount === 0}
                 >
@@ -229,19 +241,21 @@ const ProductDetailPage = ({ params }: Props) => {
 
                 {/* Success Message */}
                 {isAddedToCart && (
-                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+                  <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm">
                     {quantity} {product.title} gift card{quantity > 1 ? 's' : ''} (${selectedAmount}) added to your cart.
                   </div>
                 )}
 
-                {/* Security */}
-                <div className="mt-4 p-4 bg-green-50 rounded-lg">
-                  <div className="flex items-center">
-                    <span className="text-green-500 text-xl mr-2">🔒</span>
+                {/* Security Badge */}
+                <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                  <div className="flex items-start">
+                    <div className="bg-purple-100 p-2 rounded-lg mr-3">
+                      <span className="text-purple-600">🔒</span>
+                    </div>
                     <div>
-                      <p className="text-sm font-medium text-green-800">Secure Purchase</p>
-                      <p className="text-xs text-green-600">
-                        256-bit SSL encryption • Instant delivery • Money-back guarantee
+                      <p className="text-sm font-medium text-gray-900">Secure Checkout</p>
+                      <p className="text-xs text-gray-600 mt-1">
+                        Your transaction is secured with 256-bit encryption. Instant delivery guaranteed.
                       </p>
                     </div>
                   </div>
