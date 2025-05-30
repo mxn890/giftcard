@@ -66,7 +66,7 @@ const GiftCard: React.FC<GiftCardProps> = ({
 
   return (
     <div className="relative rounded-lg bg-transparent transition-all duration-300 overflow-hidden flex flex-col h-full">
-      <Link href={`/product/${id}`} className="block flex-1 flex flex-col items-center text-center p-2 pb-1"> {/* Reduced pb-2 to pb-1 */}
+      <Link href={`/product/${id}`} className=" flex-1 flex flex-col items-center text-center p-2 pb-1"> {/* Reduced pb-2 to pb-1 */}
         <div className="absolute top-3 left-3 z-10 flex space-x-2">
           {popular && (
             <div className="bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium">
