@@ -26,7 +26,9 @@ const Shop = () => {
     { id: 'gaming', name: 'Gaming' },
     { id: 'streaming', name: 'Streaming' },
     { id: 'food', name: 'Food & Dining' },
-    { id: 'travel', name: 'Travel' }
+    { id: 'travel', name: 'Travel' },
+    { id: 'fashion', name: 'Fashion' },
+    { id: 'beauty', name: 'Beauty' }
   ];
 
   const filteredCards = giftCardsData.filter(card => {

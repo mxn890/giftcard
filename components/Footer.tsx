@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaCcVisa, FaCcMastercard, FaPaypal, FaApple, FaBitcoin } from 'react-icons/fa';
 
 const Footer = () => {
   return (
@@ -6,7 +7,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-semibold mb-4">About GiftHub</h3>
+            <h3 className="text-lg font-semibold mb-4">About ZakGifs</h3>
             <p className="text-gray-300 text-sm">
               Your trusted destination for digital gift cards from top brands worldwide.
             </p>
@@ -32,19 +33,29 @@ const Footer = () => {
           
           <div>
             <h3 className="text-lg font-semibold mb-4">Ways to Pay</h3>
-            <div className="flex flex-wrap gap-2">
-              <span className="text-xs bg-gray-700 px-2 py-1 rounded">Visa</span>
-              <span className="text-xs bg-gray-700 px-2 py-1 rounded">Mastercard</span>
-              <span className="text-xs bg-gray-700 px-2 py-1 rounded">PayPal</span>
-              <span className="text-xs bg-gray-700 px-2 py-1 rounded">Apple Pay</span>
-              <span className="text-xs bg-gray-700 px-2 py-1 rounded">Bitcoin</span>
+            <div className="flex flex-wrap gap-4">
+              <span className="text-2xl text-gray-300 hover:text-white transition-colors" title="Visa">
+                <FaCcVisa />
+              </span>
+              <span className="text-2xl text-gray-300 hover:text-white transition-colors" title="Mastercard">
+                <FaCcMastercard />
+              </span>
+              <span className="text-2xl text-gray-300 hover:text-white transition-colors" title="PayPal">
+                <FaPaypal />
+              </span>
+              <span className="text-2xl text-gray-300 hover:text-white transition-colors" title="Apple Pay">
+                <FaApple />
+              </span>
+              <span className="text-2xl text-gray-300 hover:text-white transition-colors" title="Bitcoin">
+                <FaBitcoin />
+              </span>
             </div>
           </div>
         </div>
         
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
           <p className="text-gray-300 text-sm">
-            © 2024 GiftHub. All rights reserved.
+            © 2024 ZakGifs. All rights reserved.
           </p>
         </div>
       </div>

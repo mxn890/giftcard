@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import { CartProvider } from "@/contexts/CartContext";
 import TopHeader from "@/components/Top";
 
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
           <Navbar />
           <main className=""> {/* Adjust this padding based on your Navbar height */}
             {children}
+            
           </main>
         </CartProvider>
       </body>

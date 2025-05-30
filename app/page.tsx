@@ -57,56 +57,66 @@ const Index = () => {
       <PromotionalBanners />
 
       {/* Features Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-brand-dark-gray mb-4">
-              Why Choose GiftHub?
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              We make gift card shopping simple, secure, and rewarding
-            </p>
-          </div>
+      <section className="py-12 md:py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
+    <div className="text-center mb-12 lg:mb-16">
+      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-dark-gray mb-4">
+        Why Choose ZakGifts?
+      </h2>
+      <p className="text-gray-600 max-w-2xl mx-auto text-lg sm:text-xl">
+        We make gift card shopping simple, secure, and rewarding
+      </p>
+    </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-brand-purple rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">⚡</span>
-              </div>
-              <h3 className="text-xl font-semibold text-brand-dark-gray mb-2">
-                Instant Delivery
-              </h3>
-              <p className="text-gray-600">
-                Get your digital gift cards delivered instantly to your email. No waiting required.
-              </p>
-            </div>
-
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-brand-purple rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">🔒</span>
-              </div>
-              <h3 className="text-xl font-semibold text-brand-dark-gray mb-2">
-                100% Secure
-              </h3>
-              <p className="text-gray-600">
-                Your transactions are protected with bank-level security and encryption.
-              </p>
-            </div>
-
-            <div className="text-center p-6">
-              <div className="w-16 h-16 bg-brand-purple rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-white text-2xl">💰</span>
-              </div>
-              <h3 className="text-xl font-semibold text-brand-dark-gray mb-2">
-                Best Prices
-              </h3>
-              <p className="text-gray-600">
-                Enjoy competitive prices and exclusive discounts on all gift cards.
-              </p>
-            </div>
-          </div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+      {/* Feature 1 */}
+      <div className="bg-gray-50 hover:bg-white rounded-xl p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+        <div className="w-16 h-16 bg-brand-purple rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <span className="text-white text-3xl" aria-hidden="true">⚡</span>
         </div>
-      </section>
+        <h3 className="text-xl sm:text-2xl font-semibold text-brand-dark-gray mb-3">
+          Instant Delivery
+        </h3>
+        <p className="text-gray-600 text-base sm:text-lg">
+          Get your digital gift cards delivered instantly to your email. No waiting required.
+        </p>
+      </div>
+
+      {/* Feature 2 */}
+      <div className="bg-gray-50 hover:bg-white rounded-xl p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+        <div className="w-16 h-16 bg-brand-purple rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <span className="text-white text-3xl" aria-hidden="true">🔒</span>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-semibold text-brand-dark-gray mb-3">
+          100% Secure
+        </h3>
+        <p className="text-gray-600 text-base sm:text-lg">
+          Your transactions are protected with bank-level security and encryption.
+        </p>
+      </div>
+
+      {/* Feature 3 */}
+      <div className="bg-gray-50 hover:bg-white rounded-xl p-6 sm:p-8 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+        <div className="w-16 h-16 bg-brand-purple rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <span className="text-white text-3xl" aria-hidden="true">💰</span>
+        </div>
+        <h3 className="text-xl sm:text-2xl font-semibold text-brand-dark-gray mb-3">
+          Best Prices
+        </h3>
+        <p className="text-gray-600 text-base sm:text-lg">
+          Enjoy competitive prices and exclusive discounts on all gift cards.
+        </p>
+      </div>
+    </div>
+
+    {/* Optional CTA Button */}
+    <div className="text-center mt-12 lg:mt-16">
+      <button className="bg-brand-purple hover:bg-purple-700 text-white font-medium py-3 px-8 rounded-lg text-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+        Get Started
+      </button>
+    </div>
+  </div>
+</section>
     </Layout>
   );
 };

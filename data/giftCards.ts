@@ -20,7 +20,7 @@ export const giftCardsData: GiftCardData[] = [
     title: 'Apple Gift Card',
     description: 'Shop Apple’s App Store for Apps and Games, pay for subscriptions, and unlock Apple’s digital library',
     fullDescription: 'An Apple Gift Card (also known as a US iTunes gift card) allows you to shop Apple’s App Store for Apps and Games, pay for subscriptions, and unlock all of Apple’s digital library of TV shows, movies, music and books! You can even pay for other services such as Hulu and Disney+ right from your Apple account.',
-    image: '/cards/apple2.png',
+    image: '/cards/apple.png',
     rating: 5,
     originalPrice: 200,
     salePrice: 195,
@@ -33,7 +33,7 @@ export const giftCardsData: GiftCardData[] = [
     title: 'Razer Gold Gift Card',
     description: 'Buy games, virtual currencies, gaming hardware and apparel on Razer.com',
     fullDescription: 'With a US Razer Gold Gift Card, you can buy games, virtual currencies, gaming hardware (such as laptops), and apparel on Razer.com.',
-    image: '/cards/razer.png',
+    image: '/cards/gold.png',
     rating: 4,
     originalPrice: 200,
     salePrice: 195,
@@ -82,7 +82,7 @@ export const giftCardsData: GiftCardData[] = [
     title: 'Amazon Gift Card',
     description: 'Shop the endless online catalog of Amazon.com',
     fullDescription: 'Amazon Gift Cards are the perfect way to give them exactly what they want. Recipients can choose from millions of items storewide with no fees or expiration date.',
-    image: '/cards/amazon.png',
+    image: '/cards/amazon1.png',
     rating: 5,
     originalPrice: 200,
     salePrice: 195,
@@ -325,7 +325,7 @@ export const giftCardsData: GiftCardData[] = [
     title: 'VUDU Gift Card',
     description: 'Rent or buy movies and TV shows on VUDU',
     fullDescription: 'Add balance to your VUDU Account with a VUDU gift card, pay for upgrades, and watch your favorite movies and TV shows on VUDU.com.',
-    image: '/cards/vudu.png',
+    image: '/cards/v.png',
     rating: 3,
     originalPrice: 100,
     salePrice: 95,
@@ -368,54 +368,9 @@ export const giftCardsData: GiftCardData[] = [
     category: 'finance',
     amounts: [25, 50, 100, 150, 200]
   },
-  {
-    id: '30',
-    title: 'Canada PSN Gift Card',
-    description: 'Access Canada PSN Store (value in CAD)',
-    fullDescription: 'Use this PSN gift card to access the entire catalog of the Canada PSN Store. Buy games, subscribe to PSN Plus, or download music and movies. *Purchase price in USD, card value in CAD.',
-    image: '/cards/psn-canada.png',
-    rating: 4,
-    originalPrice: 100,
-    salePrice: 95,
-    category: 'gaming',
-    amounts: [25, 50, 100]
-  },
-  {
-    id: '31',
-    title: 'Australia Apple Gift Card',
-    description: 'Shop Australia iTunes Store (value in AUD)',
-    fullDescription: 'Shop the Australia iTunes Store with a Australia Apple Gift Card. Buy movies, TV shows, apps, games, subscriptions, books and more. *Card valid only for Australia iTunes account.',
-    image: '/cards/apple2.png',
-    rating: 4,
-    originalPrice: 300,
-    salePrice: 295,
-    category: 'entertainment',
-    amounts: [25, 50, 100, 200, 300]
-  },
-  {
-    id: '32',
-    title: 'UK Amazon Gift Card',
-    description: 'Shop UK Amazon (value in GBP)',
-    fullDescription: 'Shop the endless online catalog of UK Amazon. Buy digital Amazon products such as Amazon Prime Video where you can rent and buy movies, TV shows, documentaries and more.',
-    image: '/cards/amazonuk.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'shopping',
-    amounts: [25, 50, 75, 100, 150, 200]
-  },
-  {
-    id: '33',
-    title: 'Sephora Canada Gift Card',
-    description: 'Shop on Sephora.ca with 3-day shipping across Canada',
-    fullDescription: 'Use a Sephora Canada Gift Card on Sephora.ca and get 3-day shipping on all your purchases on Sephora.ca in all Canadian territory! *Valid Only for Sephora Canada Accounts*.',
-    image: '/cards/sephora.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'beauty',
-    amounts: [50, 75, 100, 150, 200]
-  },
+
+ 
+  
   {
     id: '34',
     title: 'Fandango Gift Card',
@@ -428,30 +383,7 @@ export const giftCardsData: GiftCardData[] = [
     category: 'entertainment',
     amounts: [25, 50]
   },
-  {
-    id: '35',
-    title: 'Canada Airbnb Gift Card',
-    description: 'Book hotels and restaurants across Canada',
-    fullDescription: 'Book anywhere using the Airbnb app. Get access to thousands of hotels and restaurants! Buy a Canada Airbnb gift card today and enjoy your travels with us! *Valid only for Canadian Airbnb customers*.',
-    image: '/cards/airbnb.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'travel',
-    amounts: [50, 75, 100, 150, 200]
-  },
-  {
-    id: '36',
-    title: 'Australia Amazon Gift Card',
-    description: 'Shop Australia Amazon (value in AUD)',
-    fullDescription: 'Shop the online catalog of Australia Amazon. Buy digital Amazon products such as Amazon Prime Video where you can rent and buy movies, TV shows, documentaries and more. *Prices in USD, card currency in AUD. Only valid for Australian Amazon Store*.',
-    image: '/cards/amazon.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'shopping',
-    amounts: [25, 50, 100, 200]
-  },
+ 
   {
     id: '37',
     title: 'SiriusXM Gift Card',
@@ -488,18 +420,7 @@ export const giftCardsData: GiftCardData[] = [
     category: 'fashion',
     amounts: [50, 75, 100, 150, 200]
   },
-  {
-    id: '40',
-    title: 'Australia Xbox Gift Card',
-    description: 'Add funds for games and subscriptions (AUD)',
-    fullDescription: 'Add funds to your Microsoft Account for use in the Microsoft Store on PCs or Xbox. Choose from thousands of video games, add-ons, movies and TV shows. *Valid only for Australia Xbox Accounts. Price in USD and Card value in AUD*.',
-    image: '/cards/xbox.png',
-    rating: 4,
-    originalPrice: 100,
-    salePrice: 95,
-    category: 'gaming',
-    amounts: [25, 50, 100]
-  },
+  
   {
     id: '41',
     title: 'eBay Gift Card',
@@ -550,24 +471,13 @@ export const giftCardsData: GiftCardData[] = [
     category: 'travel',
     amounts: [50, 100, 200]
   },
-  {
-    id: '45',
-    title: 'Canada DoorDash Gift Card',
-    description: 'Get food delivered across Canada',
-    fullDescription: 'Use this Canada DoorDash Gift Card to get your favorite food delivered with DoorDash app! Add money to your account to pay balances on orders from restaurants and other food establishments that deliver via the DoorDash platform.',
-    image: '/cards/door.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'food',
-    amounts: [50, 100, 150, 200]
-  },
+  
   {
     id: '46',
     title: 'Disney+ Gift Card',
     description: 'Stream Disney, Pixar, Marvel and Star Wars content',
     fullDescription: 'Stream Disney, Pixar, Marvel, Star Wars, Nat Geo with a Disney+ gift card. Plans start at $7.99/mo for streaming with ads, or jump to $13.99/mo for plans without ads and offline streaming.',
-    image: '/cards/d.png',
+    image: '/cards/ds.png',
     rating: 5,
     originalPrice: 100,
     salePrice: 95,
@@ -575,18 +485,7 @@ export const giftCardsData: GiftCardData[] = [
     popular: true,
     amounts: [50, 100]
   },
-  {
-    id: '47',
-    title: 'Canada Uber Gift Card',
-    description: 'Pay for rides and Uber Eats in Canada (value in CAD)',
-    fullDescription: 'Load up your Uber account balance easily with a Canada Uber gift card and pay for rides through Ubers mobile app. Once loaded on your account, you can use your Uber Cash for payments on Uber Eats as well. *Valid only for Canada Uber accounts. Price in USD, card value in CAD.',
-    image: '/cards/uber.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'transport',
-    amounts: [50, 75, 100, 150, 200]
-  },
+  
   {
     id: '48',
     title: 'Hotels.com Gift Card',
@@ -599,18 +498,7 @@ export const giftCardsData: GiftCardData[] = [
     category: 'travel',
     amounts: [25, 50, 100]
   },
-  {
-    id: '49',
-    title: 'Australia PSN Gift Card',
-    description: 'Access Australia PSN Store (value in AUD)',
-    fullDescription: 'Use this PSN gift card to access the entire catalog of the Australia PSN Store. Buy games, subscribe to PSN Plus, or download music and movies. *Valid only for Australia PSN Accounts. Price in USD, card value in AUD.',
-    image: '/cards/ps.png',
-    rating: 4,
-    originalPrice: 135,
-    salePrice: 130,
-    category: 'gaming',
-    amounts: [30, 80, 100, 135]
-  },
+  
   {
     id: '50',
     title: 'Tidal Gift Card',
@@ -623,18 +511,7 @@ export const giftCardsData: GiftCardData[] = [
     category: 'music',
     amounts: [20, 60, 120]
   },
-  {
-    id: '51',
-    title: 'Canada Nintendo eShop Gift Card',
-    description: 'Fund your Canada Nintendo account (value in CAD)',
-    fullDescription: 'Pay for your games, apps, upgrades and more in the Canada Nintendo eShop store with an eShop gift card. *Valid for Canada Nintendo store. Price in USD, card value in CAD*.',
-    image: '/cards/nintendo.png',
-    rating: 4,
-    originalPrice: 99,
-    salePrice: 95,
-    category: 'gaming',
-    amounts: [35, 50, 99]
-  },
+  
   {
     id: '52',
     title: 'Garena Free Fire Gift Card',
@@ -659,18 +536,7 @@ export const giftCardsData: GiftCardData[] = [
     category: 'sports',
     amounts: [50, 75, 100, 150, 200]
   },
-  {
-    id: '54',
-    title: 'Canada Xbox Gift Card',
-    description: 'Add funds for Canada Xbox accounts (value in CAD)',
-    fullDescription: 'Add funds to your Microsoft Account for use in the Microsoft Store on PCs or Xbox. This Xbox gift card can also be used for Xbox Game Pass and Xbox Live Gold for Canada Accounts. *Valid only for Canada Xbox Accounts. Price in USD and Card value in CAD*.',
-    image: '/cards/xbox.png',
-    rating: 4,
-    originalPrice: 100,
-    salePrice: 95,
-    category: 'gaming',
-    amounts: [50, 75, 100]
-  },
+  
   {
     id: '55',
     title: 'Valorant Riot Points Gift Card',
@@ -695,18 +561,7 @@ export const giftCardsData: GiftCardData[] = [
     category: 'gaming',
     amounts: [10, 25]
   },
-  {
-    id: '57',
-    title: 'Canada Google Play Gift Card',
-    description: 'Add funds to Canada Google Play account (value in CAD)',
-    fullDescription: 'Add funds to your Canada Google Play account without a credit card. Use your account balance to purchase Apps, Games, Books, Movies, Newsstand, and subscriptions. *Valid for Canada Google Play accounts. Price in USD, currency in CAD.',
-    image: '/cards/goggleplay.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'entertainment',
-    amounts: [25, 50, 100, 200]
-  },
+ 
   {
     id: '58',
     title: 'Candy Crush Gift Card',
@@ -724,7 +579,7 @@ export const giftCardsData: GiftCardData[] = [
     title: 'Foot Locker Gift Card',
     description: 'Shop for your favorite shoes online',
     fullDescription: 'Shop Foot Locker Gift Card and access to their website and get your favorite shoes online! Valid only for United States Foot Lockers Stores.',
-    image: '/cards/foot.png',
+    image: '/cards/foot1.png',
     rating: 4,
     originalPrice: 200,
     salePrice: 195,
@@ -793,30 +648,8 @@ export const giftCardsData: GiftCardData[] = [
     amounts: [25, 50, 100]
   },
   // Previously added cards that were repeated in your request:
-  {
-    id: '65',
-    title: 'Canada Uber Gift Card',
-    description: 'Pay for rides and Uber Eats in Canada (value in CAD)',
-    fullDescription: 'Load up your Uber account balance easily with a Canada Uber gift card and pay for rides through Ubers mobile app. Once loaded on your account, you can use your Uber Cash for payments on Uber Eats as well. *Valid only for Canada Uber accounts. Price in USD, card value in CAD.',
-    image: '/cards/uber.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'transport',
-    amounts: [50, 75, 100, 150, 200]
-  },
-  {
-    id: '66',
-    title: 'Hotels.com Gift Card',
-    description: 'Book thousands of hotels worldwide',
-    fullDescription: 'Book anywhere using the Hotels App or the Hotels.com website. Get access to thousands of hotels using a Hotels gift card today and enjoy your travels with us!',
-    image: '/cards/hotels.png',
-    rating: 4,
-    originalPrice: 100,
-    salePrice: 95,
-    category: 'travel',
-    amounts: [25, 50, 100]
-  },
+  
+  
   {
     id: '67',
     title: 'Tidal Gift Card',
@@ -829,18 +662,7 @@ export const giftCardsData: GiftCardData[] = [
     category: 'music',
     amounts: [20, 60, 120]
   },
-  {
-    id: '68',
-    title: 'Canada Nintendo eShop Gift Card',
-    description: 'Fund your Canada Nintendo account (value in CAD)',
-    fullDescription: 'Pay for your games, apps, upgrades and more in the Canada Nintendo eShop store with an eShop gift card. *Valid for Canada Nintendo store. Price in USD, card value in CAD*.',
-    image: '/cards/nintendo.png',
-    rating: 4,
-    originalPrice: 99,
-    salePrice: 95,
-    category: 'gaming',
-    amounts: [35, 50, 99]
-  },
+  
   {
     id: '69',
     title: 'H&M Gift Card',
@@ -901,18 +723,7 @@ export const giftCardsData: GiftCardData[] = [
     category: 'arts',
     amounts: [50]
   },
-  {
-    id: '74',
-    title: 'Canada Twitch Gift Card',
-    description: 'Support streamers on Canadian Twitch (value in CAD)',
-    fullDescription: 'Add balance to your Twitch account! You can use this gift card to subscribe to channels, buy bits to support streamers and more! *Valid only for Canadian Twitch accounts. Price in USD, currency in CAD.',
-    image: '/cards/twitch.png',
-    rating: 4,
-    originalPrice: 200,
-    salePrice: 195,
-    category: 'gaming',
-    amounts: [50, 100, 150, 200]
-  },
+ 
   {
     id: '75',
     title: 'Hooters Gift Card',
@@ -955,7 +766,7 @@ export const giftCardsData: GiftCardData[] = [
     title: 'Foot Locker Gift Card',
     description: 'Shop for your favorite shoes online',
     fullDescription: 'Shop Foot Locker Gift Card and access to their website and get your favorite shoes online! Valid only for United States Foot Lockers Stores.',
-    image: '/cards/foot.png',
+    image: '/cards/foot1.png',
     rating: 4,
     originalPrice: 200,
     salePrice: 195,
@@ -998,6 +809,32 @@ export const giftCardsData: GiftCardData[] = [
     salePrice: 48,
     category: 'gaming',
     amounts: [20, 50]
+  },
+  {
+    id: "82",
+    title: "UK IKEA Gift Card",
+    description: "Shop online or in store at IKEA UK",
+    fullDescription: "Pick up a UK IKEA Gift Card and shop online or in store to get the best deals! Valid only for IKEA's UK Stores.",
+    image: "/cards/ik.png",
+    rating: 5,
+    originalPrice: 100,
+    salePrice: 50,
+    category: 'shopping',
+    amounts: [50, 100, 200]
+  },
+  
+  {
+    id: "83",
+    title: "US Karma Koin Gift Card",
+    description: "Now called Nexon Game Card",
+    fullDescription: "A US Karma Koin Gift Card, now called a Nexon Game Card, is the most convenient way to purchase merchandise online. Protect your identity and payment information, while also giving back to the community with each purchase. You can use your card balance on any store that accepts Karma Koin and Nexon Game Cards.",
+    image: "/cards/karma.png",
+    rating: 4,
+    originalPrice: 20,
+    salePrice: 10,
+    category: "gaming",
+    amounts: [10, 25, 50, 100]
   }
+  
 ];
 

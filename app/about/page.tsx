@@ -3,6 +3,7 @@ import { Zap, ShieldCheck, CreditCard, MessageSquare, Gamepad } from 'lucide-rea
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import Footer from '@/components/Footer';
 
 const AboutPage = () => {
   const features = [
@@ -147,13 +148,13 @@ const AboutPage = () => {
                       Shop Now
                     </Button>
                   </Link>
-                  <Link href="/contact" passHref>
+                  <Link href="/shop" passHref>
                     <Button 
                       size="lg" 
                       variant="outline" 
                       className="text-white border-white hover:bg-purple-700/20 font-bold"
                     >
-                      Contact Us
+                      View Products
                     </Button>
                   </Link>
                 </div>
@@ -214,6 +215,7 @@ const AboutPage = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
