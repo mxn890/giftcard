@@ -65,8 +65,8 @@ const GiftCard: React.FC<GiftCardProps> = ({
   };
 
   return (
-    <div className="relative bg-white rounded-lg border border-gray-200 hover:border-brand-purple/50 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group flex flex-col h-full">
-      <Link href={`/product/${id}`} className="block flex-1">
+    <div className="relative rounded-lg bg-transparent transition-all duration-300 overflow-hidden flex flex-col h-full">
+      <Link href={`/product/${id}`} className="block flex-1 flex flex-col items-center text-center p-2 pb-1"> {/* Reduced pb-2 to pb-1 */}
         <div className="absolute top-3 left-3 z-10 flex space-x-2">
           {popular && (
             <div className="bg-amber-500 text-white px-2 py-1 rounded text-xs font-medium">
@@ -80,64 +80,64 @@ const GiftCard: React.FC<GiftCardProps> = ({
           )}
         </div>
 
-        <div className="relative h-48 bg-gray-50 overflow-hidden">
+        <div className="relative w-32 h-32 overflow-hidden mb-3">
           <Image
             src={image}
             alt={title}
-            fill
-            className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            width={128}
+            height={128}
+            className="object-contain w-full h-full transition-transform duration-500 group-hover:scale-105"
             onError={(e) => {
-              // Handle image error if needed
+              const target = e.target as HTMLImageElement;
+              target.src = '/placeholder-product.png';
             }}
           />
         </div>
 
-        <div className="p-4">
-          <div className="mb-3">
-            <h3 className="font-bold text-gray-900 text-lg mb-1 group-hover:text-brand-purple transition-colors">
-              {title}
-            </h3>
-            <p className="text-gray-600 text-sm line-clamp-2">
-              {description}
-            </p>
-          </div>
+        <div className="flex-1 flex flex-col items-center w-full">
+          <h3 className="font-bold text-gray-900 text-base mb-1 group-hover:text-brand-purple transition-colors line-clamp-1">
+            {title}
+          </h3>
+          <p className="text-gray-600 text-xs line-clamp-2 mb-2">
+            {description}
+          </p>
 
-          <div className="mb-4">
-            <div className="flex items-baseline space-x-2">
-              <span className="text-xl font-bold text-brand-purple">
+          <div className="flex flex-col items-center mt-auto w-full">
+            <div className="flex items-baseline space-x-1">
+              <span className="text-lg font-bold text-brand-purple">
                 {formatCurrency(salePrice)}
               </span>
               {savings > 0 && (
-                <span className="text-sm text-gray-500 line-through">
+                <span className="text-xs text-gray-500 line-through">
                   {formatCurrency(originalPrice)}
                 </span>
               )}
             </div>
             <div className="text-xs text-gray-500 mt-1">
-              Values from {formatCurrency(amounts[0])} to {formatCurrency(amounts[amounts.length - 1])}
+              {formatCurrency(amounts[0])} - {formatCurrency(amounts[amounts.length - 1])}
             </div>
           </div>
         </div>
       </Link>
 
-      <div className="p-4 pt-0">
+      {/* Tightened button container padding */}
+      <div className="px-0 pb-1 w-full text-center "> {/* Reduced px-2 to px-1 and pb-2 to pb-1 */}
         <Button 
           onClick={handleAddToCart}
-          className={`w-full ${isAdded ? 'bg-green-500 hover:bg-green-600' : 'bg-brand-purple hover:bg-brand-purple/90'} transition-colors`}
+          className={`w-36 ${isAdded ? 'bg-green-500 hover:bg-green-600' : 'bg-gradient-to-r from-purple-900 to-purple-300 hover:from-purple-400 hover:to-purple-900'} transition-colors text-xs`} // Added text-xs for smaller text
           size="sm"
           disabled={isLoading}
         >
           {isAdded ? (
             <>
-              <Check className="mr-2 h-3.5 w-3.5" />
+              <Check className="mr-1 h-3 w-3" /> {/* Reduced icon size */}
               Added
             </>
           ) : isLoading ? (
             'Adding...'
           ) : (
             <>
-              <ShoppingCart className="mr-2 h-3.5 w-3.5" />
+              <ShoppingCart className="mr-1 h-3 w-3" /> {/* Reduced icon size */}
               Add 
             </>
           )}

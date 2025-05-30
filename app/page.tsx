@@ -11,7 +11,7 @@ import { useCart } from '@/contexts/CartContext';
 const Index = () => {
   const { cartCount } = useCart();
   // Show only first 6 cards on homepage
-  const popularGiftCards = giftCardsData.slice(0, 6);
+  const popularGiftCards = giftCardsData.slice(0, 8);
 
   return (
     <Layout>
@@ -33,7 +33,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {popularGiftCards.map((card) => (
               <GiftCard
                 key={card.id}
@@ -68,7 +68,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-brand-purple rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-white text-2xl">⚡</span>
