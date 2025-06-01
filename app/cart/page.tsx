@@ -151,7 +151,7 @@ const Cart = () => {
 
                 <div className="mt-4 text-center">
                   <Link 
-                    href="/shop" 
+                    href="/checkout" 
                     className="text-purple-600 hover:text-purple-700 hover:underline text-sm font-medium"
                   >
                     Continue Shopping
