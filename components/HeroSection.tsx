@@ -352,9 +352,9 @@ const HeroSection = () => {
               </motion.div>
             </motion.div>
 
-            {/* Right Content - Mini Cards Grid */}
+            {/* Right Content - Mini Cards Grid (Hidden on mobile) */}
             <motion.div 
-              className="relative"
+              className="hidden lg:block relative"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 

@@ -5,7 +5,7 @@ import Layout from '@/components/layout';
 import { useCart } from '@/contexts/CartContext';
 import CreditCardForm from '@/components/checkout/CreditCardForm';
 import PaypalForm from '@/components/checkout/PaypalForm';
-import BitcoinForm from '@/components/checkout/BitcoinForm';
+import { PayButton } from '@/components/checkout/BitcoinForm';
 import BankTransferForm from '@/components/checkout/BankTransferForm';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -26,7 +26,14 @@ const CheckoutPage = () => {
       case 'paypal':
         return <PaypalForm totalAmount={totalAmount} />;
       case 'bitcoin':
-        return <BitcoinForm totalAmount={totalAmount} />;
+        return <PayButton 
+           amount={totalAmount} 
+           cartItems={cartItems.map(item => ({
+             id: item.id,
+             price: item.selectedAmount,
+             quantity: item.quantity
+           }))} 
+         />;
       case 'bank-transfer':
         return <BankTransferForm totalAmount={totalAmount} />;
       default:
@@ -121,27 +128,10 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            {/* Order Summary */}
+            {/* Order Summary - Simplified */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 sticky top-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h3>
-
-                <div className="space-y-4 mb-6">
-                  {cartItems.map((item) => (
-                    <div key={item.id} className="flex justify-between items-center border-b border-gray-100 pb-3">
-                      <div className="flex items-center space-x-3">
-                        <div className="bg-gray-100 w-12 h-12 rounded-md flex items-center justify-center">
-                          <span className="text-xs font-medium text-gray-500">IMG</span>
-                        </div>
-                        <div>
-                          
-                          <p className="text-sm text-gray-500">Qty: {item.quantity}</p>
-                        </div>
-                      </div>
-                      <p className="font-medium">${(item.selectedAmount * item.quantity).toFixed(2)}</p>
-                    </div>
-                  ))}
-                </div>
 
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between text-gray-700">
