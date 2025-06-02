@@ -61,7 +61,7 @@ const CheckoutPage = () => {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gray-50 py-12">
+      <div className="min-h-screen bg-gray-50 py-12 text-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8 text-center lg:text-left">
             <h1 className="text-3xl font-bold text-gray-900">Secure Checkout</h1>
@@ -88,7 +88,7 @@ const CheckoutPage = () => {
                   <Button
                     variant={activePaymentMethod === 'credit-card' ? 'default' : 'outline'}
                     onClick={() => setActivePaymentMethod('credit-card')}
-                    className="flex flex-col items-center h-20 gap-2 transition-all"
+                    className="flex flex-col items-center h-20 gap-2 transition-all text-black"
                   >
                     <CreditCard className="h-5 w-5" />
                     <span>Credit Card</span>
@@ -97,7 +97,7 @@ const CheckoutPage = () => {
                   <Button
                     variant={activePaymentMethod === 'paypal' ? 'default' : 'outline'}
                     onClick={() => setActivePaymentMethod('paypal')}
-                    className="flex flex-col items-center h-20 gap-2 transition-all"
+                    className="flex flex-col items-center h-20 gap-2 transition-all text-black"
                   >
                     <Wallet className="h-5 w-5" />
                     <span>PayPal</span>
@@ -106,7 +106,7 @@ const CheckoutPage = () => {
                   <Button
                     variant={activePaymentMethod === 'bitcoin' ? 'default' : 'outline'}
                     onClick={() => setActivePaymentMethod('bitcoin')}
-                    className="flex flex-col items-center h-20 gap-2 transition-all"
+                    className="flex flex-col items-center h-20 gap-2 transition-all text-black"
                   >
                     <Bitcoin className="h-5 w-5" />
                     <span>Bitcoin</span>
@@ -115,7 +115,7 @@ const CheckoutPage = () => {
                   <Button
                     variant={activePaymentMethod === 'bank-transfer' ? 'default' : 'outline'}
                     onClick={() => setActivePaymentMethod('bank-transfer')}
-                    className="flex flex-col items-center h-20 gap-2 transition-all"
+                    className="flex flex-col items-center h-20 gap-2 transition-all text-black"
                   >
                     <Banknote className="h-5 w-5" />
                     <span>Bank Transfer</span>
@@ -154,7 +154,7 @@ const CheckoutPage = () => {
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-100">
+                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-100 ">
                   <p className="text-sm text-green-800 font-medium">
                     🎁 You'll earn {Math.floor(totalAmount * 50)} reward points with this purchase!
                   </p>

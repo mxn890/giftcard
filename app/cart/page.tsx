@@ -6,9 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const Cart = () => {
   const { cartItems, updateQuantity, removeFromCart, cartCount } = useCart();
+  const router = useRouter();
 
   const totalAmount = cartItems.reduce((total, item) => {
     return total + item.selectedAmount * item.quantity;
@@ -145,13 +147,16 @@ const Cart = () => {
                   </div>
                 </div>
 
-                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 text-lg font-semibold">
+                <Button 
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 text-lg font-semibold"
+                  onClick={() => router.push('/checkout')}
+                >
                   Proceed to Checkout
                 </Button>
 
                 <div className="mt-4 text-center">
                   <Link 
-                    href="/checkout" 
+                    href="/shop" 
                     className="text-purple-600 hover:text-purple-700 hover:underline text-sm font-medium"
                   >
                     Continue Shopping
