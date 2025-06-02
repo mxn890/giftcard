@@ -64,7 +64,7 @@ const Cart = () => {
 
                       <div className="flex-1">
                         <h3 className="font-semibold text-lg text-gray-900">
-                          {item.title} Gift Card
+                          {item.title}
                         </h3>
                         <p className="text-purple-600 font-bold text-lg">
                           ${item.selectedAmount.toFixed(2)}
