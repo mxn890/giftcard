@@ -416,55 +416,7 @@ const HeroSection = () => {
       </section>
 
       {/* Top Gift Cards Slider Section - Consistent Image Sizes */}
-      <section className="py-12 bg-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-extrabold text-purple-900">Popular Gift Cards</h2>
-            <p className="mt-2 text-lg text-gray-600">Most popular gift cards our customers love</p>
-          </div>
-
-          <div className="relative">
-            <Swiper
-              modules={[Autoplay, Pagination]}
-              spaceBetween={20}
-              slidesPerView={1}
-              pagination={{ clickable: true }}
-              autoplay={{
-                delay: 3000,
-                disableOnInteraction: false,
-              }}
-              breakpoints={{
-                640: {
-                  slidesPerView: 2,
-                },
-                768: {
-                  slidesPerView: 3,
-                },
-                1024: {
-                  slidesPerView: 4,
-                },
-              }}
-              className="pb-12"
-            >
-              {topGiftCards.map((card) => (
-                <SwiperSlide key={card.id}>
-                  <div className="h-64 flex items-center justify-center">
-                    <div className="relative w-full h-full max-w-[200px] mx-auto">
-                      <Image
-                        src={card.image}
-                        alt={`${card.brand} Gift Card`}
-                        fill
-                        className="object-contain"
-                        style={{ backgroundColor: 'transparent' }}
-                      />
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
-      </section>
+     
     </div>
   );
 };

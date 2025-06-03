@@ -60,7 +60,7 @@ const Index = () => {
       <section className="py-12 md:py-20 bg-white">
   <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
     <div className="text-center mb-12 lg:mb-16">
-      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-dark-gray mb-4">
+      <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-brand-dark-gray mb-4">
         Why Choose ZakGifts?
       </h2>
       <p className="text-gray-600 max-w-2xl mx-auto text-lg sm:text-xl">
