@@ -9,6 +9,7 @@ export async function GET(req: Request) {
     const tokenMatch = cookie.match(/auth_token=([^;]+)/);
     const token = tokenMatch ? tokenMatch[1] : null;
 
+    
     if (!token) {
       return NextResponse.json({ user: null }, { status: 401 });
     }
