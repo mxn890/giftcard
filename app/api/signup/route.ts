@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { client } from '@/sanity/lib/client';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
+
 import nodemailer from 'nodemailer';
 
 export async function POST(req: Request) {
