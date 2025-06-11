@@ -12,26 +12,36 @@ import Link from 'next/link';
 import { CreditCard, Wallet, Bitcoin, Banknote } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
+
+interface CartItem {
+  id: string;
+  title: string;
+  selectedAmount: number;
+  quantity: number;
+  // Add any other properties your cart items have
+}
+
 const CheckoutPage = () => {
   const { cartItems, cartCount } = useCart();
   const [activePaymentMethod, setActivePaymentMethod] = useState<string>('credit-card');
   const token = document.cookie
-  .split('; ')
-  .find(row => row.startsWith('auth_token'))
-  ?.split('=')[1];
+    .split('; ')
+    .find(row => row.startsWith('auth_token'))
+    ?.split('=')[1];
 
+  if (token) {
+    const decoded = jwtDecode<{ id: string; name: string; email: string }>(token);
+    console.log(decoded.id); // user ID
+  }
 
-if (token) {
-  const decoded = jwtDecode<{ id: string; name: string; email: string }>(token);
-  console.log(decoded.id); // user ID
-}
-
-   const totalAmount = cartItems.reduce((total, item) => {
+  const totalAmount = cartItems.reduce((total, item) => {
     return total + item.selectedAmount * item.quantity;
   }, 0);
-    const { user, loading } = useUser();
+  
+  const { user, loading } = useUser();
   const router = useRouter();
-useEffect(() => {
+
+  useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
     }
@@ -44,6 +54,7 @@ useEffect(() => {
   if (!user) {
     return null; // Prevent flashing content
   }
+
   const renderPaymentForm = () => {
     switch (activePaymentMethod) {
       case 'credit-card':
@@ -52,13 +63,14 @@ useEffect(() => {
         return <PaypalForm totalAmount={totalAmount} />;
       case 'bitcoin':
         return <PayButton 
-           amount={totalAmount} 
-           cartItems={cartItems.map(item => ({
-             id: item.id,
-             price: item.selectedAmount,
-             quantity: item.quantity
-           }))} 
-         />;
+          amount={totalAmount} 
+          cartItems={cartItems.map(item => ({
+            id: item.id,
+            title: item.title,
+            price: item.selectedAmount,
+            quantity: item.quantity
+          }))} 
+        />;
       case 'bank-transfer':
         return <BankTransferForm totalAmount={totalAmount} />;
       default:
@@ -179,7 +191,7 @@ useEffect(() => {
                   </div>
                 </div>
 
-                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-100 ">
+                <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-100">
                   <p className="text-sm text-green-800 font-medium">
                     🎁 You'll earn {Math.floor(totalAmount * 50)} reward points with this purchase!
                   </p>
