@@ -9,7 +9,8 @@ const JWT_SECRET = process.env.JWT_SECRET || '';
 
 export async function POST(req: Request) {
 
-  
+
+
   try {
     // Check for empty request body
     const contentLength = req.headers.get('content-length');
