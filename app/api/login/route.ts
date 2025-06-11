@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 import nodemailer from 'nodemailer';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_here';
+const JWT_SECRET = process.env.JWT_SECRET || 'muskanNisar$jwtSecret@123!';
 
 export async function POST(req: Request) {
   try {
