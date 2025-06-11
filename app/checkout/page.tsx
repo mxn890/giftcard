@@ -1,4 +1,4 @@
-'use client';
+'use client'
 import { useUser } from '@/hooks/useUser';
 import React, { useEffect, useState } from 'react';
 import Layout from '@/components/layout';
@@ -12,28 +12,21 @@ import Link from 'next/link';
 import { CreditCard, Wallet, Bitcoin, Banknote } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
+import { useCookies } from 'react-cookie';
 
 interface CartItem {
   id: string;
   title: string;
   selectedAmount: number;
   quantity: number;
-  // Add any other properties your cart items have
 }
 
 const CheckoutPage = () => {
   const { cartItems, cartCount } = useCart();
   const [activePaymentMethod, setActivePaymentMethod] = useState<string>('credit-card');
-  const token = document.cookie
-    .split('; ')
-    .find(row => row.startsWith('auth_token'))
-    ?.split('=')[1];
-
-  if (token) {
-    const decoded = jwtDecode<{ id: string; name: string; email: string }>(token);
-    console.log(decoded.id); // user ID
-  }
-
+  const [cookies] = useCookies(['auth_token']);
+  const [userId, setUserId] = useState<string | null>(null);
+  
   const totalAmount = cartItems.reduce((total, item) => {
     return total + item.selectedAmount * item.quantity;
   }, 0);
@@ -42,17 +35,34 @@ const CheckoutPage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    if (cookies.auth_token) {
+      try {
+        const decoded = jwtDecode<{ id: string; name: string; email: string }>(cookies.auth_token);
+        setUserId(decoded.id);
+      } catch (error) {
+        console.error('Error decoding token:', error);
+      }
+    }
+  }, [cookies.auth_token]);
+
+  useEffect(() => {
     if (!loading && !user) {
       router.push('/login');
     }
   }, [user, loading]);
 
   if (loading) {
-    return <p>Loading...</p>;
+    return (
+      <Layout>
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <p>Loading...</p>
+        </div>
+      </Layout>
+    );
   }
 
   if (!user) {
-    return null; // Prevent flashing content
+    return null;
   }
 
   const renderPaymentForm = () => {
@@ -62,15 +72,17 @@ const CheckoutPage = () => {
       case 'paypal':
         return <PaypalForm totalAmount={totalAmount} />;
       case 'bitcoin':
-        return <PayButton 
-          amount={totalAmount} 
-          cartItems={cartItems.map(item => ({
-            id: item.id,
-            title: item.title,
-            price: item.selectedAmount,
-            quantity: item.quantity
-          }))} 
-        />;
+        return (
+          <PayButton 
+            amount={totalAmount} 
+            cartItems={cartItems.map(item => ({
+              id: item.id,
+              title: item.title,
+              price: item.selectedAmount,
+              quantity: item.quantity
+            }))} 
+          />
+        );
       case 'bank-transfer':
         return <BankTransferForm totalAmount={totalAmount} />;
       default:
@@ -116,7 +128,6 @@ const CheckoutPage = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Payment Section */}
             <div className="lg:col-span-2">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Payment Method</h2>
@@ -165,7 +176,6 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            {/* Order Summary - Simplified */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 sticky top-8">
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Order Summary</h3>

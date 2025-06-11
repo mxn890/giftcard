@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import { CartProvider } from "@/contexts/CartContext";
 import TopHeader from "@/components/Top";
-
+import Providers from "./providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,15 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Wrap client parts inside a client wrapper */}
-        <CartProvider>
+        <Providers>
           <TopHeader />
           <Navbar />
-          <main className=""> {/* Adjust this padding based on your Navbar height */}
-            {children}
-            
-          </main>
-        </CartProvider>
+          <main>{children}</main>
+        </Providers>
       </body>
     </html>
   );

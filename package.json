@@ -54,6 +54,7 @@
     "nodemailer": "^7.0.3",
     "npm": "^11.4.1",
     "react": "^18",
+    "react-cookie": "^8.0.1",
     "react-day-picker": "^9.7.0",
     "react-dom": "^18",
     "react-hook-form": "^7.56.4",
