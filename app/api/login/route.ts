@@ -5,9 +5,11 @@ import jwt from 'jsonwebtoken';
 import { serialize } from 'cookie';
 import nodemailer from 'nodemailer';
 
-const JWT_SECRET = process.env.JWT_SECRET || '9ef131bdf590333ee5922707f4883051a1eab6ce57565370c734b2024d1fd8f3a327f57a97f440ec64920694b8cff191a5de32c5e1d4df03dc4250080e92bffd';
+const JWT_SECRET = process.env.JWT_SECRET || '';
 
 export async function POST(req: Request) {
+
+  
   try {
     // Check for empty request body
     const contentLength = req.headers.get('content-length');
@@ -56,7 +58,7 @@ export async function POST(req: Request) {
 
     // Set cookie
     const cookie = serialize('auth_token', token, {
-      httpOnly: true,
+      httpOnly: false,
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7 days
       secure: process.env.NODE_ENV === 'production',

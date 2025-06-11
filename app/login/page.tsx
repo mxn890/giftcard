@@ -28,21 +28,13 @@ export default function LoginForm() {
       const res = await fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-        credentials: 'include'
+        body: JSON.stringify({ email, password })
       })
 
       if (!res.ok) {
-  const text = await res.text()
-  try {
-    const data = JSON.parse(text)
-    throw new Error(data.error || 'Login failed')
-  } catch {
-    console.error('Non-JSON error response:', text)
-    throw new Error('Something went wrong on the server.')
-  }
-}
-
+        const data = await res.json()
+        throw new Error(data.error || 'Login failed')
+      }
 
       // Redirect to purchases page after successful login
       router.push('/purchases')

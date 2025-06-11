@@ -2,9 +2,6 @@ import { createClient } from '@sanity/client';
 import { NextRequest, NextResponse } from 'next/server';
 import { jwtDecode } from 'jwt-decode';
 
-// This forces the route to be dynamic (not statically generated)
-export const dynamic = 'force-dynamic';
-
 const client = createClient({
   projectId: 't2m9ot8z',
   dataset: 'production',
