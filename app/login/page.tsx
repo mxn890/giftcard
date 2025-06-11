@@ -33,9 +33,16 @@ export default function LoginForm() {
       })
 
       if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Login failed')
-      }
+  const text = await res.text()
+  try {
+    const data = JSON.parse(text)
+    throw new Error(data.error || 'Login failed')
+  } catch {
+    console.error('Non-JSON error response:', text)
+    throw new Error('Something went wrong on the server.')
+  }
+}
+
 
       // Redirect to purchases page after successful login
       router.push('/purchases')
