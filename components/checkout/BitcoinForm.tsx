@@ -1,14 +1,22 @@
 'use client'
+import { jwtDecode } from 'jwt-decode';
 import { useState, useMemo, useCallback } from 'react'
 
 interface CartItem {
   id: string;
-  name?: string;  // Made optional
+  name?: string;
+  title:string;  // Made optional
   price: number;
   quantity: number;
-  productName?: string; // Alternative name field
+  productName?: string; 
+  // Alternative name field
 }
-
+type UserToken = {
+  id: string;
+  name: string;
+  email: string;
+  // add other JWT payload properties if needed
+};
 interface PayButtonProps {
   amount: number;
   cartItems?: CartItem[];
@@ -23,7 +31,8 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
     address: '',
     city: '',
     country: '',
-    zipCode: ''
+    zipCode: '',
+    phonenumber: ''
   });
 
   // Calculate total amount safely
@@ -34,6 +43,66 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
     );
   }, [amount, cartItems]);
 
+  const handlePurchase = async (cartItems: CartItem[], totalAmount: number) => {
+    try {
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('auth_token='))
+        ?.split('=')[1];
+  
+      if (!token) {
+        alert('You must be logged in to make a purchase');
+        return;
+      }
+  
+      const user = jwtDecode<UserToken>(token);
+      if (!user || !user.id) {
+        alert('Invalid user token');
+        return;
+      }
+  
+      const purchaseDoc = {
+  _type: 'purchase',
+  userId: user.id,
+  items: cartItems.map(item => ({
+    productId: item.id,
+    quantity: item.quantity,
+    price: totalAmount,
+    iname:item.title
+  })),
+  totalAmount,
+  name: formData.name,
+  email: formData.email,          // <-- added
+  address: formData.address,      // <-- added
+  country: formData.country,
+  zipcode : formData.zipCode ,
+  phoneNumber: formData.phonenumber,// <-- added
+  purchaseDate: new Date().toISOString(),
+};
+
+  
+      // Call your backend API route to save purchase
+      const res = await fetch('/api/purchasedata', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(purchaseDoc),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to save purchase');
+      }
+  
+      alert('Purchase saved successfully!');
+      // clear cart, redirect, etc.
+    } catch (error) {
+      console.error('Error saving purchase:', error);
+      alert('Failed to save purchase');
+    }
+  };
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -169,6 +238,16 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
             required
             placeholder="your@email.com"
           />
+          <InputField
+            label="phone number *"
+            id="phonenumber"
+            name="phonenumber"
+            type="phonenumber"
+            value={formData.phonenumber}
+            onChange={handleChange}
+            required
+            placeholder="your@email.com"
+          />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <InputField
@@ -212,7 +291,10 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
 
       {/* Payment Button */}
       <button
-        onClick={handlePayment}
+        onClick={() => {
+  handlePayment(); 
+  handlePurchase(cartItems, amount); // No extra () => 
+}}
         disabled={loading || cartItems.length === 0}
         className={`w-full py-3 px-6 rounded-md font-medium text-white transition-colors ${
           loading || cartItems.length === 0

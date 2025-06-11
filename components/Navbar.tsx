@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Search, ShoppingCart, Menu, X } from 'lucide-react'
+import { Search, ShoppingCart, Menu, X, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useCart } from '@/contexts/CartContext'
@@ -14,10 +14,13 @@ const Navbar = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [searchResults, setSearchResults] = useState<any[]>([])
   const [showSearchResults, setShowSearchResults] = useState(false)
+  const [showAccountDropdown, setShowAccountDropdown] = useState(false)
   const { cartCount } = useCart()
   const router = useRouter()
   const searchRef = useRef<HTMLDivElement>(null)
   const mobileSearchRef = useRef<HTMLDivElement>(null)
+  const accountDropdownRef = useRef<HTMLDivElement>(null)
+  const mobileAccountDropdownRef = useRef<HTMLDivElement>(null)
 
   // Close search results when clicking outside
   useEffect(() => {
@@ -27,6 +30,12 @@ const Navbar = () => {
       }
       if (mobileSearchRef.current && !mobileSearchRef.current.contains(event.target as Node)) {
         setShowSearchResults(false)
+      }
+      if (accountDropdownRef.current && !accountDropdownRef.current.contains(event.target as Node)) {
+        setShowAccountDropdown(false)
+      }
+      if (mobileAccountDropdownRef.current && !mobileAccountDropdownRef.current.contains(event.target as Node)) {
+        setShowAccountDropdown(false)
       }
     }
 
@@ -57,6 +66,10 @@ const Navbar = () => {
     setShowSearchResults(false)
     setSearchTerm('')
     setIsMenuOpen(false)
+  }
+
+  const toggleAccountDropdown = () => {
+    setShowAccountDropdown(!showAccountDropdown)
   }
 
   return (
@@ -168,22 +181,53 @@ const Navbar = () => {
               </motion.div>
             </Link>
 
-            {/* Auth Buttons */}
-            <div className="hidden md:flex items-center space-x-2 text-black">
-              <Link href="/login">
-                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                  <Button variant="outline" size="sm">
-                    Login
-                  </Button>
-                </motion.div>
-              </Link>
-              <Link href="/create-account">
-                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                  <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 shadow-md" size="sm">
-                    Create Account
-                  </Button>
-                </motion.div>
-              </Link>
+            {/* Account Dropdown */}
+            <div className="hidden md:block relative" ref={accountDropdownRef}>
+              <motion.button
+                onClick={toggleAccountDropdown}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="p-2 rounded-full hover:bg-gray-100 text-purple-800"
+              >
+                <User className="h-5 w-5" />
+              </motion.button>
+
+              <AnimatePresence>
+                {showAccountDropdown && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border border-gray-200"
+                  >
+                    <div className="py-1">
+                      <Link
+                        href="/purchases"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                        onClick={() => setShowAccountDropdown(false)}
+                      >
+                        My Purchases
+                      </Link>
+                      <div className="border-t border-gray-200"></div>
+                      <Link
+                        href="/login"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                        onClick={() => setShowAccountDropdown(false)}
+                      >
+                        Sign In
+                      </Link>
+                      <Link
+                        href="/signup"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
+                        onClick={() => setShowAccountDropdown(false)}
+                      >
+                        Create Account
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* Mobile Menu Button */}
@@ -210,7 +254,7 @@ const Navbar = () => {
             >
               <div className="py-4 border-t border-gray-200 text-black">
                 {/* Mobile Search */}
-                <div className="relative mb-4 " ref={mobileSearchRef}>
+                <div className="relative mb-4" ref={mobileSearchRef}>
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-800 h-4 w-4" />
                   <Input
                     type="text"
@@ -283,20 +327,60 @@ const Navbar = () => {
                   >
                     About
                   </Link>
-                </div>
 
-                {/* Mobile Auth Buttons */}
-                <div className="flex space-x-3 pt-4 text-black">
-                  <Link href="/login" className="flex-1" onClick={() => setIsMenuOpen(false)}>
-                    <Button variant="outline" size="sm" className="w-full">
-                      Login
-                    </Button>
-                  </Link>
-                  <Link href="/create-account" className="flex-1" onClick={() => setIsMenuOpen(false)}>
-                    <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 w-full shadow-md" size="sm">
-                      Create Account
-                    </Button>
-                  </Link>
+                  {/* Mobile Account Dropdown */}
+                  <div className="relative" ref={mobileAccountDropdownRef}>
+                    <button
+                      onClick={toggleAccountDropdown}
+                      className="w-full text-left text-gray-700 hover:text-purple-600 px-3 py-2 rounded-lg hover:bg-purple-50 transition-colors font-medium flex items-center justify-between"
+                    >
+                      <span>Account</span>
+                      <User className="h-4 w-4" />
+                    </button>
+
+                    <AnimatePresence>
+                      {showAccountDropdown && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.2 }}
+                          className="overflow-hidden pl-4"
+                        >
+                          <Link
+                            href="/purchases"
+                            className="block px-3 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg"
+                            onClick={() => {
+                              setIsMenuOpen(false)
+                              setShowAccountDropdown(false)
+                            }}
+                          >
+                            My Purchases
+                          </Link>
+                          <Link
+                            href="/login"
+                            className="block px-3 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg"
+                            onClick={() => {
+                              setIsMenuOpen(false)
+                              setShowAccountDropdown(false)
+                            }}
+                          >
+                            Sign In
+                          </Link>
+                          <Link
+                            href="/signup"
+                            className="block px-3 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-lg"
+                            onClick={() => {
+                              setIsMenuOpen(false)
+                              setShowAccountDropdown(false)
+                            }}
+                          >
+                            Create Account
+                          </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
                 </div>
               </div>
             </motion.div>

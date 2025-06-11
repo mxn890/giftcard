@@ -456,7 +456,7 @@ export const giftCardsData: GiftCardData[] = [
     rating: 4,
     originalPrice: 250,
     salePrice: 245,
-    category: 'sports',
+    category: 'shopping ',
     amounts: [50, 100, 150, 200, 250]
   },
   {
@@ -834,7 +834,105 @@ export const giftCardsData: GiftCardData[] = [
     salePrice: 10,
     category: "gaming",
     amounts: [10, 25, 50, 100]
-  }
+  },
+    {
+      id: "84",
+      title: "UK Tesco Gift Card",
+      description: "Supermarket shopping made easy",
+      fullDescription: "A UK Tesco Gift Card can be used for groceries, clothing, and household items at any Tesco store across the UK. Perfect for personal use or as a thoughtful gift.",
+      image: "/cards/tesco.png",
+      rating: 4,
+      originalPrice: 25,
+      salePrice: 24,
+      category: "food",
+      amounts: [5, 10, 20, 25, 30, 50]
+    },
+    {
+      id: "85",
+      title: "Costa UK Gift Card",
+      description: "Your favorite coffee break",
+      fullDescription: "Costa Coffee Gift Card is ideal for buying coffee, pastries, and snacks at any Costa Coffee location in the UK. Delivered as a digital or physical gift card.",
+      image: "/cards/costa.png",
+      rating: 4,
+      originalPrice: 25,
+      salePrice: 23,
+      category: "food",
+      amounts: [5, 10, 20, 25, 30, 50, 100]
+    },
+    {
+      id: "86",
+      title: "McDonald's USA Gift Card",
+      description: "Enjoy meals at McDonald's",
+      fullDescription: "The McDonald's Arch Card is the best way to enjoy fast food favorites across the USA. No fees and no expiration date make it a great gift for anyone.",
+      image: "/cards/mc.png",
+      rating: 5,
+      originalPrice: 25,
+      salePrice: 24,
+      category: "food",
+      amounts: [10, 25, 50, 100]
+    },
+    {
+      id: "87",
+      title: "Chipotle USA Gift Card",
+      description: "Flavor-packed Mexican meals",
+      fullDescription: "Chipotle Gift Cards are valid across the USA for burritos, bowls, tacos, and more. Digital or physical format available. Easy to redeem online or in-store.",
+      image: "/cards/chip.png",
+      rating: 4,
+      originalPrice: 25,
+      salePrice: 23,
+      category: "food",
+      amounts: [5, 10, 25, 50, 100]
+    },
+    {
+      id: "88",
+      title: "Starbucks USA Gift Card",
+      description: "Perfect for coffee lovers",
+      fullDescription: "Use this Starbucks USA Gift Card for drinks, food, or merchandise at any participating Starbucks store in the United States. Redeemable online and in-store.",
+      image: "/cards/chipp.png",
+      rating: 5,
+      originalPrice: 25,
+      salePrice: 24,
+      category: "food",
+      amounts: [5, 10, 25, 50, 100, 500]
+    },
+    {
+      id: "89",
+      title: "Starbucks UK Gift Card",
+      description: "Coffee treats across the UK",
+      fullDescription: "Enjoy handcrafted beverages and snacks with a Starbucks UK Gift Card. Works at any UK Starbucks location. Can be used via mobile or physical card.",
+      image: "/cards/chipp.png",
+      rating: 4,
+      originalPrice: 25,
+      salePrice: 24,
+      category: "food",
+      amounts: [10, 25, 50, 100, 150]
+    },
+    {
+      id: "90",
+      title: "Pizza Hut USA Gift Card",
+      description: "Pizza cravings sorted",
+      fullDescription: "Pizza Hut USA Gift Card is great for ordering delicious pizzas, wings, and sides online or in-store anywhere in the US. No expiry or fees.",
+      image: "/cards/pizza.png",
+      rating: 4,
+      originalPrice: 25,
+      salePrice: 23,
+      category: "food",
+      amounts: [10, 25, 50, 100]
+    },
+    {
+      id: "91",
+      title: "Domino's USA Gift Card",
+      description: "Hot pizza delivered fast",
+      fullDescription: "Domino’s USA Gift Card is redeemable for online and in-store purchases at Domino’s locations throughout the US. No expiration or service fees apply.",
+      image: "/cards/dom.png",
+      rating: 5,
+      originalPrice: 25,
+      salePrice: 24,
+      category: "food",
+      amounts: [10, 25, 50, 100]
+    }
+  
+  
   
 ];
 

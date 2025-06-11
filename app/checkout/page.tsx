@@ -1,6 +1,6 @@
 'use client';
-
-import React, { useState } from 'react';
+import { useUser } from '@/hooks/useUser';
+import React, { useEffect, useState } from 'react';
 import Layout from '@/components/layout';
 import { useCart } from '@/contexts/CartContext';
 import CreditCardForm from '@/components/checkout/CreditCardForm';
@@ -10,15 +10,40 @@ import BankTransferForm from '@/components/checkout/BankTransferForm';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { CreditCard, Wallet, Bitcoin, Banknote } from 'lucide-react';
-
+import { useRouter } from 'next/navigation';
+import { jwtDecode } from 'jwt-decode';
 const CheckoutPage = () => {
   const { cartItems, cartCount } = useCart();
   const [activePaymentMethod, setActivePaymentMethod] = useState<string>('credit-card');
+  const token = document.cookie
+  .split('; ')
+  .find(row => row.startsWith('auth_token'))
+  ?.split('=')[1];
 
-  const totalAmount = cartItems.reduce((total, item) => {
+
+if (token) {
+  const decoded = jwtDecode<{ id: string; name: string; email: string }>(token);
+  console.log(decoded.id); // user ID
+}
+
+   const totalAmount = cartItems.reduce((total, item) => {
     return total + item.selectedAmount * item.quantity;
   }, 0);
+    const { user, loading } = useUser();
+  const router = useRouter();
+useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading]);
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!user) {
+    return null; // Prevent flashing content
+  }
   const renderPaymentForm = () => {
     switch (activePaymentMethod) {
       case 'credit-card':
