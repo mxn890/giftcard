@@ -9,7 +9,20 @@ const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_here';
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    // Check for empty request body
+    const contentLength = req.headers.get('content-length');
+    if (!contentLength || parseInt(contentLength) === 0) {
+      return NextResponse.json({ error: 'Empty request body' }, { status: 400 });
+    }
+
+    // Parse JSON body safely
+    let body;
+    try {
+      body = await req.json();
+    } catch (jsonErr) {
+      return NextResponse.json({ error: 'Invalid JSON format' }, { status: 400 });
+    }
+
     const { email, password } = body;
 
     if (!email || !password) {
@@ -41,16 +54,16 @@ export async function POST(req: Request) {
       { expiresIn: '10min' }
     );
 
-
     // Set cookie
     const cookie = serialize('auth_token', token, {
-      httpOnly: false,
+      httpOnly: true,
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 7 days
       secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
     });
 
-    // Send successful login email
+    // Email transport setup
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
@@ -61,6 +74,7 @@ export async function POST(req: Request) {
       },
     });
 
+    // Mail content
     const mailOptions = {
       from: `"ZakGifts!" <${process.env.EMAIL_FROM}>`,
       to: email,
@@ -91,18 +105,19 @@ export async function POST(req: Request) {
       `,
     };
 
-    // Send email without blocking the response
+    // Send email (non-blocking)
     transporter.sendMail(mailOptions)
       .then(() => console.log('Login notification email sent'))
       .catch(err => console.error('Error sending login email:', err));
 
-    const res = NextResponse.json({ 
+    // Prepare response
+    const res = NextResponse.json({
       message: 'Logged in successfully',
       user: {
         id: user._id,
         name: user.name,
-        email: user.email
-      }
+        email: user.email,
+      },
     });
     res.headers.set('Set-Cookie', cookie);
 
@@ -111,4 +126,4 @@ export async function POST(req: Request) {
     console.error('Login error:', err);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-}  
+}
