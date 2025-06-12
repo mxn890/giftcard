@@ -114,7 +114,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         throw new Error(data.error || 'Failed to save purchase');
       }
 
-      alert('oppss! please choose a different payment option');
+    
       // clear cart, redirect, etc.
     } catch (error) {
       console.error('Error saving purchase:', error);
