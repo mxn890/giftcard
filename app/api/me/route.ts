@@ -11,6 +11,7 @@ export async function GET(req: Request) {
 
     
     if (!token) {
+      
       return NextResponse.json({ user: null }, { status: 401 });
     }
 
