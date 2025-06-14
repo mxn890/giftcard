@@ -69,9 +69,7 @@ const Cart = () => {
                         <p className="text-purple-600 font-bold text-lg">
                           ${item.selectedAmount.toFixed(2)}
                         </p>
-                        <p className="text-sm text-gray-500">
-                          Earn {Math.floor(item.selectedAmount * 50)} reward points
-                        </p>
+                       
                       </div>
 
                       <div className="flex items-center justify-between sm:justify-end gap-4">
@@ -165,7 +163,7 @@ const Cart = () => {
 
                 <div className="mt-6 p-4 bg-green-50 rounded-lg border border-green-100">
                   <p className="text-sm text-green-800 font-medium">
-                    🎁 You'll earn {Math.floor(totalAmount * 50)} reward points with this purchase!
+                    
                   </p>
                 </div>
               </div>

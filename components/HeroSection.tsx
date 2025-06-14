@@ -91,6 +91,16 @@ const topGiftCards = [
   }
 ];
 
+// User profile images for the reviews
+const userAvatars = [
+  '/avatars/user1.png',
+  '/avatars/user2.png',
+  '/avatars/user3.png',
+  '/avatars/user4.png',
+  '/avatars/user5.png',
+  '/avatars/user6.png'
+];
+
 const HeroSection = () => {
   // Animation variants
   const containerVariants = {
@@ -335,9 +345,15 @@ const HeroSection = () => {
               >
                 <div className="flex items-center">
                   <div className="flex -space-x-3">
-                    {[1, 2, 3, 4].map((i) => (
+                    {userAvatars.slice(0, 4).map((avatar, i) => (
                       <div key={i} className="w-8 h-8 rounded-full bg-white/10 border-2 border-white/10 overflow-hidden">
-                       
+                        <Image
+                          src={avatar}
+                          alt={`User ${i+1}`}
+                          width={32}
+                          height={32}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                     ))}
                   </div>
@@ -415,8 +431,51 @@ const HeroSection = () => {
         </div>
       </section>
 
-      {/* Top Gift Cards Slider Section - Consistent Image Sizes */}
-     
+      {/* Top Gift Cards Slider Section */}
+      <section >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+         
+
+          <motion.div 
+            className="relative"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <Swiper
+              modules={[Autoplay, Pagination]}
+              spaceBetween={30}
+              slidesPerView={1}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                },
+                1024: {
+                  slidesPerView: 3,
+                },
+              }}
+              autoplay={{
+                delay: 3000,
+                disableOnInteraction: false,
+              }}
+              pagination={{
+                clickable: true,
+                el: '.swiper-pagination',
+              }}
+              loop={true}
+              className="pb-12"
+            >
+              {topGiftCards.map((card) => (
+                <SwiperSlide key={card.id}>
+                 
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            <div className="swiper-pagination !relative !bottom-0 mt-8 !text-purple-400" />
+          </motion.div>
+        </div>
+      </section>
     </div>
   );
 };

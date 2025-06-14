@@ -139,7 +139,7 @@ const ProductDetailPage = ({ params }: Props) => {
                       }`}
                     />
                   ))}
-                  <span className="ml-2 text-gray-600">({product.rating}.0) • 2,847 reviews</span>
+                  <span className="ml-2 text-gray-600">({product.rating}.0) </span>
                 </div>
 
                 <h1 className="text-3xl font-bold text-gray-900 mb-4">
@@ -180,7 +180,7 @@ const ProductDetailPage = ({ params }: Props) => {
                     )}
                   </div>
                   <div className="text-sm text-gray-600">
-                    Earn {rewardPoints} reward points
+                   
                   </div>
                 </div>
 

