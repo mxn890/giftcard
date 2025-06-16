@@ -4,12 +4,10 @@ import React, { useEffect, useState } from 'react';
 import Layout from '@/components/layout';
 import { useCart } from '@/contexts/CartContext';
 import CreditCardForm from '@/components/checkout/CreditCardForm';
-import PaypalForm from '@/components/checkout/PaypalForm';
 import { PayButton } from '@/components/checkout/BitcoinForm';
-import BankTransferForm from '@/components/checkout/BankTransferForm';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { CreditCard, Wallet, Bitcoin, Banknote } from 'lucide-react';
+import { CreditCard, Bitcoin } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
 
@@ -72,8 +70,6 @@ const CheckoutPage = () => {
     switch (activePaymentMethod) {
       case 'credit-card':
         return <CreditCardForm totalAmount={totalAmount} />;
-      case 'paypal':
-        return <PaypalForm totalAmount={totalAmount} />;
       case 'bitcoin':
         return (
           <PayButton 
@@ -86,8 +82,6 @@ const CheckoutPage = () => {
             }))} 
           />
         );
-      case 'bank-transfer':
-        return <BankTransferForm totalAmount={totalAmount} />;
       default:
         return <CreditCardForm totalAmount={totalAmount} />;
     }
@@ -146,30 +140,12 @@ const CheckoutPage = () => {
                   </Button>
                   
                   <Button
-                    variant={activePaymentMethod === 'paypal' ? 'default' : 'outline'}
-                    onClick={() => setActivePaymentMethod('paypal')}
-                    className="flex flex-col items-center h-20 gap-2 transition-all text-black"
-                  >
-                    <Wallet className="h-5 w-5" />
-                    <span>PayPal</span>
-                  </Button>
-                  
-                  <Button
                     variant={activePaymentMethod === 'bitcoin' ? 'default' : 'outline'}
                     onClick={() => setActivePaymentMethod('bitcoin')}
                     className="flex flex-col items-center h-20 gap-2 transition-all text-black"
                   >
                     <Bitcoin className="h-5 w-5" />
                     <span>Bitcoin</span>
-                  </Button>
-                  
-                  <Button
-                    variant={activePaymentMethod === 'bank-transfer' ? 'default' : 'outline'}
-                    onClick={() => setActivePaymentMethod('bank-transfer')}
-                    className="flex flex-col items-center h-20 gap-2 transition-all text-black"
-                  >
-                    <Banknote className="h-5 w-5" />
-                    <span>Bank Transfer</span>
                   </Button>
                 </div>
 

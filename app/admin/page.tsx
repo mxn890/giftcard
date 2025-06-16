@@ -34,8 +34,8 @@ const client = createClient({
 });
 
 const ADMIN_CREDENTIALS = {
-  email: 'admin@example.com',
-  password: 'admin123'
+  email: 'zakgifts@gmail.com',
+  password: 'zak123'
 };
 
 export default function AdminPurchases() {
