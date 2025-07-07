@@ -26,13 +26,7 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    address: '',
-    city: '',
-    country: '',
-    zipCode: '',
-    phonenumber: ''
+    email: ''
   });
 
   // Calculate total amount safely
@@ -62,24 +56,18 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
       }
   
       const purchaseDoc = {
-  _type: 'purchase',
-  userId: user.id,
-  items: cartItems.map(item => ({
-    productId: item.id,
-    quantity: item.quantity,
-    price: totalAmount,
-    iname:item.title
-  })),
-  totalAmount,
-  name: formData.name,
-  email: formData.email,          // <-- added
-  address: formData.address,      // <-- added
-  country: formData.country,
-  zipcode : formData.zipCode ,
-  phoneNumber: formData.phonenumber,// <-- added
-  purchaseDate: new Date().toISOString(),
-};
-
+        _type: 'purchase',
+        userId: user.id,
+        items: cartItems.map(item => ({
+          productId: item.id,
+          quantity: item.quantity,
+          price: totalAmount,
+          iname: item.title
+        })),
+        totalAmount,
+        email: formData.email,
+        purchaseDate: new Date().toISOString(),
+      };
   
       // Call your backend API route to save purchase
       const res = await fetch('/api/purchasedata', {
@@ -103,6 +91,7 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
       alert('Failed to save purchase');
     }
   };
+  
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -114,13 +103,6 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
   const handlePayment = useCallback(async () => {
     setLoading(true);
     setError(null);
-    
-    // Validate required fields
-    if (!formData.name.trim()) {
-      setError('Full name is required');
-      setLoading(false);
-      return;
-    }
     
     if (!formData.email.trim() || !/^\S+@\S+\.\S+$/.test(formData.email)) {
       setError('Valid email is required');
@@ -137,7 +119,7 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
           price: item.price,
           quantity: item.quantity
         })),
-        customer: formData,
+        customer: { email: formData.email },
         metadata: {
           orderDate: new Date().toISOString(),
           itemsCount: cartItems.length
@@ -213,21 +195,11 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
         )}
       </div>
 
-      {/* Customer Information Form */}
+      {/* Customer Information Form - Simplified */}
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
         <h3 className="text-xl font-semibold mb-4 text-gray-800">Customer Information</h3>
         
         <div className="space-y-4">
-          <InputField
-            label="Full Name *"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            placeholder="Your name"
-          />
-          
           <InputField
             label="Email Address *"
             id="email"
@@ -238,63 +210,15 @@ export function PayButton({ amount = 0, cartItems = [] }: PayButtonProps) {
             required
             placeholder="your@email.com"
           />
-          <InputField
-            label="phone number *"
-            id="phonenumber"
-            name="phonenumber"
-            type="phonenumber"
-            value={formData.phonenumber}
-            onChange={handleChange}
-            required
-            placeholder="your@email.com"
-          />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InputField
-              label="Country"
-              id="country"
-              name="country"
-              value={formData.country}
-              onChange={handleChange}
-              placeholder="United States"
-            />
-
-            <InputField 
-              label="ZIP/Postal Code"
-              id="zipCode"
-              name="zipCode"
-              value={formData.zipCode}
-              onChange={handleChange}
-              placeholder="10001"
-            />
-          </div>
-
-          <InputField
-            label="Street Address"
-            id="address"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="123 Main St"
-          />
-
-          <InputField
-            label="City"
-            id="city"
-            name="city"
-            value={formData.city}
-            onChange={handleChange}
-            placeholder="New York"
-          />
         </div>
       </div>
 
       {/* Payment Button */}
       <button
         onClick={() => {
-  handlePayment(); 
-  handlePurchase(cartItems, amount); // No extra () => 
-}}
+          handlePayment(); 
+          handlePurchase(cartItems, amount);
+        }}
         disabled={loading || cartItems.length === 0}
         className={`w-full py-3 px-6 rounded-md font-medium text-white transition-colors ${
           loading || cartItems.length === 0
