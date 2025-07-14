@@ -19,6 +19,9 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "ZakGifts",
   description: "ZakGifts!",
+  other: {
+    "google-site-verification": "ky6hdrAwe7DwiiKUCcUjrsx8HhcuCzixbZjjmcoaRTE",
+  },
 };
 
 export default function RootLayout({
