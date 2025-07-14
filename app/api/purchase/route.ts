@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtDecode } from 'jwt-decode';
 
 const client = createClient({
-  projectId: 't2m9ot8z',
+  projectId: '20xchuio',
   dataset: 'production',
   apiVersion: '2025-06-06',
   token: process.env.SANITY_API_TOKEN,

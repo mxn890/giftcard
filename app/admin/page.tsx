@@ -27,7 +27,7 @@ interface Purchase {
 }
 
 const client = createClient({
-  projectId: 't2m9ot8z',
+  projectId: '20xchuio',
   dataset: 'production',
   apiVersion: '2025-06-06',
   useCdn: false,

