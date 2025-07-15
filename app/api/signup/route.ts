@@ -68,7 +68,7 @@ export async function POST(req: Request) {
         html: `
           <div style="font-family: 'Arial', sans-serif; padding: 20px;">
             <h2>Welcome, ${name}!</h2>
-            <p>You’ve successfully signed up to ZakMart. Your email is <strong>${email}</strong>.</p>
+            <p>You’ve successfully signed up to ZakGifts. Your email is <strong>${email}</strong>.</p>
             <a href="${process.env.NEXT_PUBLIC_SITE_URL || 'https://zakmart.vercel.app'}"
                style="display: inline-block; margin-top: 20px; background: #6e8efb; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">
               Visit ZakMart
