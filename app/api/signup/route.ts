@@ -64,7 +64,7 @@ export async function POST(req: Request) {
       const mailOptions = {
         from: `"ZakMart" <${process.env.EMAIL_FROM}>`,
         to: email,
-        subject: 'Welcome to ZakMart!',
+        subject: 'Welcome to ZakGifts!',
         html: `
           <div style="font-family: 'Arial', sans-serif; padding: 20px;">
             <h2>Welcome, ${name}!</h2>
