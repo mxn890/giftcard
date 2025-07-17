@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Head from 'next/head'; // ✅ import Head to control <head>
 import Layout from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, Star, ArrowLeft, Minus, Plus, Check } from 'lucide-react';
@@ -85,11 +86,19 @@ const ProductDetailPage = ({ params }: Props) => {
     setTimeout(() => setIsAddedToCart(false), 3000);
   };
 
-  const rewardPoints = Math.floor(selectedAmount * 50);
   const totalPrice = selectedAmount * quantity;
 
   return (
     <Layout>
+      {/* ✅ Dynamic Meta Tags */}
+      <Head>
+        <title>{product.title}</title>
+        <meta name="description" content={product.description} />
+        <meta property="og:title" content={product.title} />
+        <meta property="og:description" content={product.description} />
+        <meta property="og:image" content={product.image} />
+      </Head>
+
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Button
@@ -134,21 +143,14 @@ const ProductDetailPage = ({ params }: Props) => {
                   {[...Array(5)].map((_, i) => (
                     <Star
                       key={i}
-                      className={`h-5 w-5 ${
-                        i < product.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                      }`}
+                      className={`h-5 w-5 ${i < product.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'}`}
                     />
                   ))}
-                  <span className="ml-2 text-gray-600">({product.rating}.0) </span>
+                  <span className="ml-2 text-gray-600">({product.rating}.0)</span>
                 </div>
 
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">
-                  {product.title} 
-                </h1>
-
-                <p className="text-gray-700 text-lg leading-relaxed">
-                  {product.fullDescription}
-                </p>
+                <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.title}</h1>
+                <p className="text-gray-700 text-lg leading-relaxed">{product.fullDescription}</p>
               </div>
 
               {/* Purchase Card */}
@@ -173,14 +175,6 @@ const ProductDetailPage = ({ params }: Props) => {
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between items-center">
                     <span className="text-2xl font-bold text-purple-600">${selectedAmount}.00 USD</span>
-                    {product.discount && (
-                      <span className="text-green-600 font-medium">
-                        Save ${Math.floor(selectedAmount * (product.discount / 100))}
-                      </span>
-                    )}
-                  </div>
-                  <div className="text-sm text-gray-600">
-                   
                   </div>
                 </div>
 
@@ -239,14 +233,12 @@ const ProductDetailPage = ({ params }: Props) => {
                   )}
                 </Button>
 
-                {/* Success Message */}
                 {isAddedToCart && (
                   <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-800 text-sm">
                     {quantity} {product.title} gift card{quantity > 1 ? 's' : ''} (${selectedAmount}) added to your cart.
                   </div>
                 )}
 
-                {/* Security Badge */}
                 <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
                   <div className="flex items-start">
                     <div className="bg-purple-100 p-2 rounded-lg mr-3">
