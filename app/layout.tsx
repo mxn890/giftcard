@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script"; // 👈 import Script
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import TopHeader from "@/components/Top";
@@ -31,6 +32,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* ✅ Google Ads gtag.js */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17380949882"
+          strategy="beforeInteractive"
+        />
+        <Script id="google-ads-gtag" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17380949882');
+          `}
+        </Script>
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           <TopHeader />
