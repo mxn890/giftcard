@@ -47,7 +47,7 @@ const AboutPage = () => {
               transition={{ duration: 0.6 }}
               className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6"
             >
-              Why Choose <span className="text-gray-900">ZakMart</span>
+              Why Choose <span className="text-gray-900">ZakGifts</span>
             </motion.h1>
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
