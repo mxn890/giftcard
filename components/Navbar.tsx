@@ -100,12 +100,17 @@ const Navbar = () => {
             <Link href="/" className="text-gray-700 hover:text-purple-600 transition-colors font-bold">
               Home
             </Link>
+            
             <Link href="/shop" className="text-gray-700 hover:text-purple-600 transition-colors font-bold">
               Shop
             </Link>
             <Link href="/about" className="text-gray-700 hover:text-purple-600 transition-colors font-bold">
               About
             </Link>
+            <Link href="/blog" className="text-gray-700 hover:text-purple-600 transition-colors font-bold">
+              Blog
+            </Link>
+            
           </div>
 
           {/* Search Bar with Animation */}
@@ -326,6 +331,13 @@ const Navbar = () => {
                     onClick={() => setIsMenuOpen(false)}
                   >
                     About
+                  </Link>
+                  <Link 
+                    href="/blog" 
+                    className="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-lg hover:bg-purple-50 transition-colors font-medium"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Blog
                   </Link>
 
                   {/* Mobile Account Dropdown */}
