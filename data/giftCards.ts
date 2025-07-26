@@ -56,7 +56,7 @@ export interface GiftCardData {
     {
       id: 'playstation-gift-card',
       title: 'PlayStation Gift Card – Fast Digital Delivery | ZakGift',
-      description: 'Buy PSN PlayStation Gift Card online with instant delivery. Perfect for gamers – secure, cheap, and ready to use. Fast egift card code direct to your inbox.',
+      description: 'Buy PSN PlayStation  Gift Card online with instant delivery. Perfect for gamers – secure, cheap, and ready to use. Fast egift card code direct to your inbox.',
       fullDescription: 'Use this PSN gift card to access the entire catalog of the United States PSN Store. Buy new games, in-game upgrades, movies, TV shows, and other digital content!',
       image: '/cards/pss.png',
       rating: 5,
@@ -81,7 +81,7 @@ export interface GiftCardData {
     {
       id: 'amazon-gift-card',
       title: 'Amazon Gift Card USA – Fast Online Delivery | ZakGift',
-      description: 'Buy Amazon gift cards online for the USA with instant email delivery. Perfect for birthdays, holidays, or personal shopping. Secure & fast digital codes.',
+      description: 'Buy Amazon gift cards online for the USA with instant email delivery. Perfect for birthdays, holidays, or personal shopping. Secure & fast digital codes.								',
       fullDescription: 'Amazon Gift Cards are the perfect way to give them exactly what they want. Recipients can choose from millions of items storewide with no fees or expiration date.',
       image: '/cards/amazon1.png',
       rating: 5,
@@ -106,7 +106,7 @@ export interface GiftCardData {
     {
       id: 'xbox-gift-card',
       title: 'Xbox Gift Card Online – Instant Email Code | ZakGift',
-      description: 'Purchase Xbox gift cards online with fast email delivery. Top up your Xbox account in seconds – prepaid, secure, and perfect for digital gaming gifts.',
+      description: 'Purchase Xbox gift cards online with fast email delivery. Top up your Xbox account in seconds – prepaid, secure, and perfect for digital gaming gifts.								',
       fullDescription: 'Add funds to your Microsoft Account for use in the Microsoft Store on PCs or Xbox. Buy games, DLC, movies, and subscribe to Xbox Game Pass or Xbox Live Gold.',
       image: '/cards/xbox.png',
       rating: 4,

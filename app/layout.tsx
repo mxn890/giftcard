@@ -18,8 +18,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "ZakGifts",
-  description: "ZakGifts!",
+  title: "Instant Digital Gift Cards Online – Apple, Steam, Amazon | ZakGifts",
+  description: "Buy digital gift cards with debit card no verification needed. Instant delivery. Perfect gifts for birthdays, Netflix, Hulu & more",
   other: {
     "google-site-verification": "ky6hdrAwe7DwiiKUCcUjrsx8HhcuCzixbZjjmcoaRTE",
   },
