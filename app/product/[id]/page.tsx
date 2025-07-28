@@ -93,9 +93,9 @@ const ProductDetailPage = ({ params }: Props) => {
       {/* ✅ Dynamic Meta Tags */}
       <Head>
         <title>{product.title}</title>
-        <meta name="description" content={product.description} />
+        <meta name="description" content={product.fullDescription} />
         <meta property="og:title" content={product.title} />
-        <meta property="og:description" content={product.description} />
+        <meta property="og:description" content={product.fullDescription} />
         <meta property="og:image" content={product.image} />
       </Head>
 
@@ -150,7 +150,7 @@ const ProductDetailPage = ({ params }: Props) => {
                 </div>
 
                 <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.title}</h1>
-                <p className="text-gray-700 text-lg leading-relaxed">{product.fullDescription}</p>
+                <p className="text-gray-700 text-lg leading-relaxed">{product.description}</p>
               </div>
 
               {/* Purchase Card */}
@@ -262,3 +262,4 @@ const ProductDetailPage = ({ params }: Props) => {
 };
 
 export default ProductDetailPage;
+
