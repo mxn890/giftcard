@@ -4,10 +4,9 @@ import React, { useEffect, useState } from 'react';
 import Layout from '@/components/layout';
 import { useCart } from '@/contexts/CartContext';
 import CreditCardForm from '@/components/checkout/CreditCardForm';
-import { PayButton } from '@/components/checkout/BitcoinForm';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { CreditCard, Bitcoin } from 'lucide-react';
+import { CreditCard } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { jwtDecode } from 'jwt-decode';
 
@@ -20,7 +19,6 @@ interface CartItem {
 
 const CheckoutPage = () => {
   const { cartItems, cartCount } = useCart();
-  const [activePaymentMethod, setActivePaymentMethod] = useState<string>('credit-card');
   const [userId, setUserId] = useState<string | null>(null);
   
   const totalAmount = cartItems.reduce((total, item) => {
@@ -67,24 +65,7 @@ const CheckoutPage = () => {
   }
 
   const renderPaymentForm = () => {
-    switch (activePaymentMethod) {
-      case 'credit-card':
-        return <CreditCardForm totalAmount={totalAmount} />;
-      case 'bitcoin':
-        return (
-          <PayButton 
-            amount={totalAmount} 
-            cartItems={cartItems.map(item => ({
-              id: item.id,
-              title: item.title,
-              price: item.selectedAmount,
-              quantity: item.quantity
-            }))} 
-          />
-        );
-      default:
-        return <CreditCardForm totalAmount={totalAmount} />;
-    }
+    return <CreditCardForm totalAmount={totalAmount} />;
   };
 
   if (cartItems.length === 0) {
@@ -129,24 +110,12 @@ const CheckoutPage = () => {
               <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Payment Method</h2>
                 
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  <Button
-                    variant={activePaymentMethod === 'credit-card' ? 'default' : 'outline'}
-                    onClick={() => setActivePaymentMethod('credit-card')}
-                    className="flex flex-col items-center h-20 gap-2 transition-all text-black"
-                  >
-                    <CreditCard className="h-5 w-5" />
-                    <span>Credit Card</span>
-                  </Button>
-                  
-                  <Button
-                    variant={activePaymentMethod === 'bitcoin' ? 'default' : 'outline'}
-                    onClick={() => setActivePaymentMethod('bitcoin')}
-                    className="flex flex-col items-center h-20 gap-2 transition-all text-black"
-                  >
-                    <Bitcoin className="h-5 w-5" />
-                    <span>Bitcoin</span>
-                  </Button>
+                <div className="flex items-center gap-3 mb-8 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                  <CreditCard className="h-6 w-6 text-blue-600 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-gray-900">Credit Card Payment</p>
+                    <p className="text-sm text-gray-600">Secure checkout with instant processing</p>
+                  </div>
                 </div>
 
                 <div className="border-t border-gray-200 pt-6">
